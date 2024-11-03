@@ -1,20 +1,29 @@
 import { Record } from "immutable";
+import FieldValidation from "../validation/models/FieldValidation";
+import IRule from "../validation/interfaces/IRule";
+import IFieldValidation from "../validation/interfaces/IFieldValidation";
 
-export type fieldInputType = "text" | "number";
-export type fieldTypeString = string | undefined;
-export type fieldTypeNumber = number | undefined;
-export type fieldTypeDate = Date | undefined;
-export type fieldValueType = fieldTypeString | fieldTypeNumber | fieldTypeDate;
+export type FieldInputType = "text" | "number";
+export type FieldTypeString = string | undefined;
+export type FieldTypeNumber = number | undefined;
+export type FieldTypeDate = Date | undefined;
+export type FieldValueType = FieldTypeString | FieldTypeNumber | FieldTypeDate;
 
-export type fieldSchema = { fieldName: string; type: fieldInputType; caption: string };
+export type FieldSchema = {
+  fieldName: string;
+  type: FieldInputType;
+  caption: string;
+  rules: IRule[];
+};
 
 interface FieldViewModelProps {
-  inputType: fieldInputType;
+  inputType: FieldInputType;
   caption: string;
   fieldName: string;
-  value: fieldValueType;
+  value: FieldValueType;
   error: string;
   help: string;
+  validation: IFieldValidation | undefined;
 }
 
 const FieldViewModelRecord = Record<FieldViewModelProps>({
@@ -24,15 +33,19 @@ const FieldViewModelRecord = Record<FieldViewModelProps>({
   error: "",
   help: "",
   value: undefined,
+  validation: undefined,
 });
 
 export default class FieldModel extends FieldViewModelRecord {
-  constructor(dataType: fieldInputType, fieldName: string, caption: string, value: fieldValueType, help: string = "", error: string = "") {
-    super({ inputType: dataType, fieldName, caption, value, help, error });
+  constructor(dataType: FieldInputType, fieldName: string, caption: string, value: FieldValueType, error = "", help = "", validation?: IFieldValidation) {
+    super({ inputType: dataType, fieldName, caption, value, error, help, validation });
   }
 
-  public static fromSchema(schema: fieldSchema, value: fieldValueType): FieldModel {
-    return new FieldModel(schema.type, schema.fieldName!, schema.caption, value);
+  /**
+   * Factory method to create a FieldModel from a schema.
+   */
+  public static fromSchema(schema: FieldSchema, value: FieldValueType): FieldModel {
+    return new FieldModel(schema.type, schema.fieldName, schema.caption, value, "", "", new FieldValidation(schema.rules));
   }
 
   get fieldName(): string {
@@ -43,41 +56,46 @@ export default class FieldModel extends FieldViewModelRecord {
     return this.get("caption");
   }
 
-  get error(): string {
-    return this.get("error");
-  }
-
   get help(): string {
     return this.get("help");
   }
 
-  get valueAsNumber(): number | undefined {
-    return this.get("value") as number | undefined;
+  get validation(): FieldValidation {
+    return this.get("validation") as FieldValidation;
   }
 
-  get value(): fieldValueType {
+  get value(): FieldValueType {
     return this.get("value");
   }
 
+  /**
+   * Retrieves the numeric value if applicable.
+   */
+  get valueAsNumber(): FieldTypeNumber {
+    return this.value as FieldTypeNumber;
+  }
+
+  /**
+   * Retrieves the string value if applicable.
+   */
   get valueAsString(): string {
-    return this.get("value") as string;
+    return (this.value as FieldTypeString) ?? "";
   }
 
-  cloneWithValue(newValue: fieldValueType): FieldModel {
-    return this.set("value", newValue) as FieldModel;
+  /**
+   * Creates a clone of the model with a new value, updating the validation error message accordingly.
+   */
+  cloneWithValue(newValue: FieldValueType): FieldModel {
+    var newField = this.set("value", newValue);
+    this.validation?.validate(newField);
+    const errorMessage = this.validation?.validationMessage || "";
+    return newField.set("error", errorMessage) as FieldModel;
   }
 
-  cloneWithHelp(newValue: string): FieldModel {
-    return this.set("help", newValue) as FieldModel;
-  }
-
-  cloneWithError(newValue: string): FieldModel {
-    return this.set("error", newValue) as FieldModel;
-  }
-}
-
-export class TextFieldModel extends FieldModel {
-  constructor(fieldName: string, caption: string, value?: fieldValueType) {
-    super("text", fieldName, caption, value ?? "");
+  /**
+   * Creates a clone of the model with updated help text.
+   */
+  cloneWithHelp(newHelp: string): FieldModel {
+    return this.set("help", newHelp) as FieldModel;
   }
 }

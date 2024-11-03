@@ -22,9 +22,8 @@ const UIField: React.FC<IProperties> = (props) => {
   };
 
   const inputStyle = `field-text`;
-
   const showHelpMessage = !!props.value.help?.length;
-  const showErrorMessage = !!props.value.error?.length;
+  const showErrorMessage = !!props.value.error.length;
 
   return (
     <div className="ui-field">

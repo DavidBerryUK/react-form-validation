@@ -1,19 +1,22 @@
-import ViewModelBase, { FormSchemaInitialise } from "./base/BaseViewModel";
-import FieldModel, { fieldSchema, fieldTypeString } from "./base/FieldModel";
 import { Map } from "immutable";
+import FieldModel, { FieldSchema, FieldTypeString } from "./base/FieldModel";
+import RuleMandatory from "./validation/rules/RuleMandatory";
+import RuleMaxLength from "./validation/rules/RuleMaxLength";
+import RuleMinLength from "./validation/rules/RuleMinLength";
+import ViewModelBase, { FormSchemaInitialise } from "./base/BaseViewModel";
 
 type ContactFormSchema = {
-  forename: fieldSchema;
-  surname: fieldSchema;
-  emailAddress: fieldSchema;
-  message: fieldSchema;
+  forename: FieldSchema;
+  surname: FieldSchema;
+  emailAddress: FieldSchema;
+  message: FieldSchema;
 };
 
 const schemaConfig: FormSchemaInitialise = {
-  forename: { caption: "Forename", type: "text" },
-  surname: { caption: "Surname", type: "text" },
-  emailAddress: { caption: "Email Address", type: "text" },
-  message: { caption: "Message", type: "text" },
+  forename: { caption: "Forename", type: "text", rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
+  surname: { caption: "Surname", type: "text", rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
+  emailAddress: { caption: "Email Address", type: "text", rules: [new RuleMandatory(), new RuleMinLength(10), new RuleMaxLength(100)] },
+  message: { caption: "Message", type: "text", rules: [new RuleMandatory(), new RuleMinLength(20), new RuleMaxLength(1000)] },
 };
 
 /**
@@ -29,7 +32,7 @@ export class ContactFormViewModel extends ViewModelBase {
   private readonly fields: Map<string, FieldModel>;
 
   // the schema provides field meta data such as fieldname, ui-caption, data types
-  private static readonly schema = this.createSchemaFromConfig<ContactFormSchema>(schemaConfig);
+  private static readonly schema: ContactFormSchema = this.createSchemaFromConfig<ContactFormSchema>(schemaConfig);
 
   private constructor(fields: Map<string, FieldModel>) {
     super();
@@ -65,7 +68,7 @@ export class ContactFormViewModel extends ViewModelBase {
    * @param message - Initial value for the "message" field.
    * @returns {ContactFormViewModel} A new instance of ContactFormViewModel with initialized fields.
    */
-  static CreateViewModel(forename: fieldTypeString, surname: fieldTypeString, emailAddress: fieldTypeString, message: fieldTypeString): ContactFormViewModel {
+  static CreateViewModel(forename: FieldTypeString, surname: FieldTypeString, emailAddress: FieldTypeString, message: FieldTypeString): ContactFormViewModel {
     const initialValues = { forename, surname, emailAddress, message };
 
     // Map field names to FieldModel instances based on the schema and initial values
