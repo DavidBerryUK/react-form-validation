@@ -1,9 +1,9 @@
 import { Map } from "immutable";
-import FieldModel, { FieldSchema, FieldTypeString } from "./base/FieldModel";
-import RuleMandatory from "./validation/rules/RuleMandatory";
-import RuleMaxLength from "./validation/rules/RuleMaxLength";
-import RuleMinLength from "./validation/rules/RuleMinLength";
-import ViewModelBase, { FormSchemaInitialise } from "./base/BaseViewModel";
+import FieldModel, { FieldSchema, FieldTypeString } from "../library/packageViewModelp/base/FieldModel";
+import RuleMandatory from "../library/packageViewModelp/validation/rules/RuleMandatory";
+import RuleMaxLength from "../library/packageViewModelp/validation/rules/RuleMaxLength";
+import RuleMinLength from "../library/packageViewModelp/validation/rules/RuleMinLength";
+import ViewModelBase, { FormSchemaInitialise } from "../library/packageViewModelp/base/BaseViewModel";
 
 type ContactFormSchema = {
   forename: FieldSchema;
@@ -26,18 +26,8 @@ const schemaConfig: FormSchemaInitialise = {
  * and reduction in memory changes
  */
 export class ContactFormViewModel extends ViewModelBase {
-  /****************************************************/
-  /* Actual Field Values                              */
-  /****************************************************/
-  private readonly fields: Map<string, FieldModel>;
-
   // the schema provides field meta data such as fieldname, ui-caption, data types
   private static readonly schema: ContactFormSchema = this.createSchemaFromConfig<ContactFormSchema>(schemaConfig);
-
-  private constructor(fields: Map<string, FieldModel>) {
-    super();
-    this.fields = fields;
-  }
 
   /****************************************************/
   /* Initialize ContactFormViewModel with Field Models */

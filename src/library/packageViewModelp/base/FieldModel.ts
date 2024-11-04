@@ -37,8 +37,8 @@ const FieldViewModelRecord = Record<FieldViewModelProps>({
 });
 
 export default class FieldModel extends FieldViewModelRecord {
-  constructor(dataType: FieldInputType, fieldName: string, caption: string, value: FieldValueType, error = "", help = "", validation?: IFieldValidation) {
-    super({ inputType: dataType, fieldName, caption, value, error, help, validation });
+  constructor(dataType: FieldInputType, fieldName: string, caption: string, value: FieldValueType, error: string, help: string, validation: IFieldValidation) {
+    super({ inputType: dataType, fieldName: fieldName, caption: caption, value: value, error: error, help: help, validation: validation });
   }
 
   /**

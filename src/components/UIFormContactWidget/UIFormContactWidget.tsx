@@ -1,5 +1,5 @@
 import { ContactFormViewModel } from "../../viewModels/ContactFormViewModel";
-import FieldModel from "../../viewModels/base/FieldModel";
+import FieldModel from "../../library/packageViewModelp/base/FieldModel";
 import React from "react";
 import UIField from "../UIField/UIField";
 
@@ -8,7 +8,7 @@ interface IProperties {
   onChange: (form: ContactFormViewModel) => void;
 }
 
-const UIContactFormWidget: React.FC<IProperties> = ({ value, onChange }) => {
+const UIFormContactWidget: React.FC<IProperties> = ({ value, onChange }) => {
   const handleOnFieldValueChangedEvent = (field: FieldModel) => {
     onChange(value.cloneWithField(field));
   };
@@ -26,4 +26,4 @@ const UIContactFormWidget: React.FC<IProperties> = ({ value, onChange }) => {
   );
 };
 
-export default UIContactFormWidget;
+export default UIFormContactWidget;

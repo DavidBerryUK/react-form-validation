@@ -1,4 +1,4 @@
-import FieldModel from "../../viewModels/base/FieldModel";
+import FieldModel from "../../library/packageViewModelp/base/FieldModel";
 import IPropDisabled from "../../properties/IPropDisabled";
 import IPropOnChange from "../../properties/IPropOnChange";
 import IPropPlaceholder from "../../properties/IPropPlaceholder";

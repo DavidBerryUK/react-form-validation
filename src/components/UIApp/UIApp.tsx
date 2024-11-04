@@ -1,17 +1,25 @@
-import React, { useState } from "react";
-import UIContactFormWidget from "../UIContactFormWidget/UIContactFormWidget";
 import { ContactFormViewModel } from "../../viewModels/ContactFormViewModel";
+import { RsvpFormViewModel } from "../../viewModels/RsvpFormViewModel";
+import React, { useState } from "react";
+import UIFormContactWidget from "../UIFormContactWidget/UIFormContactWidget";
+import UIFormRsvpWidget from "../UIFormRsvpWidget/UIFormRsvpWidget";
 
 const UIApp: React.FC = () => {
-  const [form, setForm] = useState<ContactFormViewModel>(ContactFormViewModel.CreateEmptyViewModel());
+  const [contactForm, setContactForm] = useState<ContactFormViewModel>(ContactFormViewModel.CreateEmptyViewModel());
+  const [rsvpForm, setRsvpForm] = useState<RsvpFormViewModel>(RsvpFormViewModel.CreateEmptyViewModel());
 
-  const handleOnFormOnChangeEvent = (value: ContactFormViewModel) => {
-    setForm(value);
+  const handleOnContactFormChangeEvent = (value: ContactFormViewModel) => {
+    setContactForm(value);
+  };
+
+  const handleOnRsvpFormChangeEvent = (value: RsvpFormViewModel) => {
+    setRsvpForm(value);
   };
 
   return (
-    <div className="App">
-      <UIContactFormWidget value={form} onChange={handleOnFormOnChangeEvent} />
+    <div>
+      <UIFormContactWidget value={contactForm} onChange={handleOnContactFormChangeEvent} />
+      <UIFormRsvpWidget value={rsvpForm} onChange={handleOnRsvpFormChangeEvent} />
     </div>
   );
 };
