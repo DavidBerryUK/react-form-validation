@@ -5,6 +5,8 @@ import RuleMaxLength from "../library/packageViewModelp/validation/rules/RuleMax
 import RuleMinLength from "../library/packageViewModelp/validation/rules/RuleMinLength";
 import ViewModelBase, { FormSchemaInitialise } from "../library/packageViewModelp/base/BaseViewModel";
 import RuleValueBetween from "../library/packageViewModelp/validation/rules/RuleValueBetween";
+import EnumFieldDataType from "../library/packageViewModelp/enums/EnumFieldDataType";
+import RuleInteger from "../library/packageViewModelp/validation/rules/RuleInteger";
 
 type RsvpSchema = {
   guestName: FieldSchema;
@@ -13,9 +15,13 @@ type RsvpSchema = {
 };
 
 const schemaConfig: FormSchemaInitialise = {
-  guestName: { caption: "Guest Name", type: "text", rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
-  attending: { caption: "Attending?", type: "text", rules: [new RuleMandatory(), new RuleMinLength(10), new RuleMaxLength(100)] },
-  numberOfGuests: { caption: "Number Of Guests (1-4)", type: "number", rules: [new RuleMandatory(), new RuleValueBetween(1, 4)] },
+  guestName: { caption: "Guest Name", dataType: EnumFieldDataType.string, rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
+  attending: { caption: "Attending?", dataType: EnumFieldDataType.boolean, rules: [] },
+  numberOfGuests: {
+    caption: "Number Of Guests (1-4)",
+    dataType: EnumFieldDataType.number,
+    rules: [new RuleMandatory(), new RuleInteger(), new RuleValueBetween(1, 4)],
+  },
 };
 
 /**

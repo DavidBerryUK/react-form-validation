@@ -2,8 +2,8 @@ import { Record } from "immutable";
 import FieldValidation from "../validation/models/FieldValidation";
 import IRule from "../validation/interfaces/IRule";
 import IFieldValidation from "../validation/interfaces/IFieldValidation";
+import EnumFieldDataType from "../enums/EnumFieldDataType";
 
-export type FieldInputType = "text" | "number";
 export type FieldTypeString = string | undefined;
 export type FieldTypeNumber = number | undefined;
 export type FieldTypeDate = Date | undefined;
@@ -11,13 +11,13 @@ export type FieldValueType = FieldTypeString | FieldTypeNumber | FieldTypeDate;
 
 export type FieldSchema = {
   fieldName: string;
-  type: FieldInputType;
+  dataType: EnumFieldDataType;
   caption: string;
   rules: IRule[];
 };
 
 interface FieldViewModelProps {
-  inputType: FieldInputType;
+  dataType: EnumFieldDataType;
   caption: string;
   fieldName: string;
   value: FieldValueType;
@@ -27,7 +27,7 @@ interface FieldViewModelProps {
 }
 
 const FieldViewModelRecord = Record<FieldViewModelProps>({
-  inputType: "text",
+  dataType: EnumFieldDataType.string,
   caption: "",
   fieldName: "",
   error: "",
@@ -37,15 +37,39 @@ const FieldViewModelRecord = Record<FieldViewModelProps>({
 });
 
 export default class FieldModel extends FieldViewModelRecord {
-  constructor(dataType: FieldInputType, fieldName: string, caption: string, value: FieldValueType, error: string, help: string, validation: IFieldValidation) {
-    super({ inputType: dataType, fieldName: fieldName, caption: caption, value: value, error: error, help: help, validation: validation });
+  constructor(
+    fieldName: string,
+    dataType: EnumFieldDataType,
+    caption: string,
+    value: FieldValueType,
+    error: string,
+    help: string,
+    validation: IFieldValidation,
+  ) {
+    super({
+      dataType: dataType,
+      fieldName: fieldName,
+      caption: caption,
+      value: value,
+      error: error,
+      help: help,
+      validation: validation,
+    });
   }
 
   /**
    * Factory method to create a FieldModel from a schema.
    */
   public static fromSchema(schema: FieldSchema, value: FieldValueType): FieldModel {
-    return new FieldModel(schema.type, schema.fieldName, schema.caption, value, "", "", new FieldValidation(schema.rules));
+    return new FieldModel(
+      schema.fieldName, // Field name
+      schema.dataType, // Data Type, e.g. String, Number, Boolean, Date
+      schema.caption, // Caption displayed on the UI
+      value, // Actual value
+      "", // Error message
+      "", // help message
+      new FieldValidation(schema.rules), // validation rules
+    );
   }
 
   get fieldName(): string {
@@ -66,6 +90,10 @@ export default class FieldModel extends FieldViewModelRecord {
 
   get value(): FieldValueType {
     return this.get("value");
+  }
+
+  get dataType(): EnumFieldDataType {
+    return this.get("dataType");
   }
 
   /**

@@ -4,6 +4,7 @@ import RuleMandatory from "../library/packageViewModelp/validation/rules/RuleMan
 import RuleMaxLength from "../library/packageViewModelp/validation/rules/RuleMaxLength";
 import RuleMinLength from "../library/packageViewModelp/validation/rules/RuleMinLength";
 import ViewModelBase, { FormSchemaInitialise } from "../library/packageViewModelp/base/BaseViewModel";
+import EnumFieldDataType from "../library/packageViewModelp/enums/EnumFieldDataType";
 
 type ContactFormSchema = {
   forename: FieldSchema;
@@ -13,10 +14,10 @@ type ContactFormSchema = {
 };
 
 const schemaConfig: FormSchemaInitialise = {
-  forename: { caption: "Forename", type: "text", rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
-  surname: { caption: "Surname", type: "text", rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
-  emailAddress: { caption: "Email Address", type: "text", rules: [new RuleMandatory(), new RuleMinLength(10), new RuleMaxLength(100)] },
-  message: { caption: "Message", type: "text", rules: [new RuleMandatory(), new RuleMinLength(20), new RuleMaxLength(1000)] },
+  forename: { caption: "Forename", dataType: EnumFieldDataType.string, rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
+  surname: { caption: "Surname", dataType: EnumFieldDataType.string, rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
+  emailAddress: { caption: "Email Address", dataType: EnumFieldDataType.string, rules: [new RuleMandatory(), new RuleMinLength(10), new RuleMaxLength(100)] },
+  message: { caption: "Message", dataType: EnumFieldDataType.string, rules: [new RuleMandatory(), new RuleMinLength(20), new RuleMaxLength(1000)] },
 };
 
 /**

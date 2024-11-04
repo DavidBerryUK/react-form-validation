@@ -1,9 +1,10 @@
 import { Map } from "immutable";
-import FieldModel, { FieldInputType, FieldSchema } from "./FieldModel";
+import FieldModel, { FieldSchema } from "./FieldModel";
 import IRule from "../validation/interfaces/IRule";
+import EnumFieldDataType from "../enums/EnumFieldDataType";
 
 export type FormSchemaInitialise = {
-  [key: string]: { type: FieldInputType; caption: string; rules?: Array<IRule> };
+  [key: string]: { dataType: EnumFieldDataType; caption: string; rules?: Array<IRule> };
 };
 
 export default class ViewModelBase {
@@ -24,7 +25,15 @@ export default class ViewModelBase {
   static createSchemaFromConfig<T extends Record<string, FieldSchema>>(config: FormSchemaInitialise): T {
     // Convert the Schema Initialise data into field schemas
     const schema = Object.fromEntries(
-      Object.entries(config).map(([key, config]) => [key, { fieldName: key, type: config.type, caption: config.caption, rules: config.rules }]),
+      Object.entries(config).map(([key, config]) => [
+        key,
+        {
+          fieldName: key, // the field name
+          dataType: config.dataType, // the data type, e.g. String, Number, Date, Boolean
+          caption: config.caption, // the UI text
+          rules: config.rules, // the validation rules
+        },
+      ]),
     ) as unknown as T; // Cast to unknown first, then to T
 
     // Validate that every property of the schema is populated
