@@ -6,8 +6,9 @@ import EnumFieldDataType from "../enums/EnumFieldDataType";
 
 export type FieldTypeString = string | undefined;
 export type FieldTypeNumber = number | undefined;
+export type FieldTypeBoolean = boolean | undefined;
 export type FieldTypeDate = Date | undefined;
-export type FieldValueType = FieldTypeString | FieldTypeNumber | FieldTypeDate;
+export type FieldValueType = FieldTypeString | FieldTypeNumber | FieldTypeDate | FieldTypeBoolean;
 
 export type FieldSchema = {
   fieldName: string;
@@ -101,6 +102,10 @@ export default class FieldModel extends FieldViewModelRecord {
    */
   get valueAsNumber(): FieldTypeNumber {
     return this.value as FieldTypeNumber;
+  }
+
+  get valueAsBoolean(): FieldTypeBoolean {
+    return this.value as FieldTypeBoolean;
   }
 
   /**

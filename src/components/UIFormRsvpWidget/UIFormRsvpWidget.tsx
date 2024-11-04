@@ -2,6 +2,7 @@ import { RsvpFormViewModel } from "../../viewModels/RsvpFormViewModel";
 import FieldModel from "../../library/packageViewModelp/base/FieldModel";
 import React from "react";
 import UIField from "../UIField/UIField";
+import UIShowIfTrue from "../UIShowIfTrue/UIShowIfTrue";
 
 interface IProperties {
   value: RsvpFormViewModel;
@@ -19,7 +20,9 @@ const UIFormRsvpWidget: React.FC<IProperties> = ({ value, onChange }) => {
       <div>
         <UIField value={value.guestName} onChange={handleOnFieldValueChangedEvent} />
         <UIField value={value.attending} onChange={handleOnFieldValueChangedEvent} />
-        <UIField value={value.numberOfGuests} onChange={handleOnFieldValueChangedEvent} />
+        <UIShowIfTrue field={value.attending}>
+          <UIField value={value.numberOfGuests} onChange={handleOnFieldValueChangedEvent} />
+        </UIShowIfTrue>
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 import { Map } from "immutable";
+import EnumFieldDataType from "../library/packageViewModelp/enums/EnumFieldDataType";
 import FieldModel, { FieldSchema, FieldTypeString } from "../library/packageViewModelp/base/FieldModel";
+import RuleInteger from "../library/packageViewModelp/validation/rules/RuleInteger";
 import RuleMandatory from "../library/packageViewModelp/validation/rules/RuleMandatory";
 import RuleMaxLength from "../library/packageViewModelp/validation/rules/RuleMaxLength";
 import RuleMinLength from "../library/packageViewModelp/validation/rules/RuleMinLength";
-import ViewModelBase, { FormSchemaInitialise } from "../library/packageViewModelp/base/BaseViewModel";
 import RuleValueBetween from "../library/packageViewModelp/validation/rules/RuleValueBetween";
-import EnumFieldDataType from "../library/packageViewModelp/enums/EnumFieldDataType";
-import RuleInteger from "../library/packageViewModelp/validation/rules/RuleInteger";
+import ViewModelBase, { FormSchemaInitialise } from "../library/packageViewModelp/base/BaseViewModel";
 
 type RsvpSchema = {
   guestName: FieldSchema;

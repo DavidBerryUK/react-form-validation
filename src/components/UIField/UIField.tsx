@@ -17,8 +17,12 @@ type IProperties = IPropDisabled & IPropPlaceholder & IPropValue<FieldModel> & I
 const UIField: React.FC<IProperties> = (props) => {
   const handleOnChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
-      const newFieldValue = props.value.cloneWithValue(event.target.value);
-      props.onChange(newFieldValue);
+      if (props.value.dataType === EnumFieldDataType.boolean) {
+        props.onChange(props.value.cloneWithValue(event.target.checked));
+      } else {
+        console.log(event.target.value);
+        props.onChange(props.value.cloneWithValue(event.target.value));
+      }
     }
   };
 

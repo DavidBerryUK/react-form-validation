@@ -7,7 +7,7 @@ export default class RuleBase {
     this.customMessage = customMessage;
   }
 
-  isValueEmpty(value: string | number | Date | undefined | null): boolean {
+  isValueEmpty(value: string | boolean | number | Date | undefined | null): boolean {
     if (value === undefined || value === null) {
       return true;
     }
