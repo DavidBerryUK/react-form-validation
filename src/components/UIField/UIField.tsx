@@ -20,7 +20,6 @@ const UIField: React.FC<IProperties> = (props) => {
       if (props.value.dataType === EnumFieldDataType.boolean) {
         props.onChange(props.value.cloneWithValue(event.target.checked));
       } else {
-        console.log(event.target.value);
         props.onChange(props.value.cloneWithValue(event.target.value));
       }
     }

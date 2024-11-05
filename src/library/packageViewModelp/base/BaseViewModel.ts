@@ -7,7 +7,7 @@ export type FormSchemaInitialise = {
   [key: string]: { dataType: EnumFieldDataType; caption: string; rules?: Array<IRule> };
 };
 
-export default class ViewModelBase {
+export default abstract class ViewModelBase {
   /****************************************************/
   /* Actual Field Values                              */
   /****************************************************/
@@ -18,25 +18,23 @@ export default class ViewModelBase {
   }
 
   /**
-   *
-   * @param config List of field details, caption values and the field type
-   * @returns a Schema object of type T, e.g. ContactFormSchema
+   * Creates a schema based on a configuration object
+   * @param config - Configuration for schema initialization
+   * @returns Schema of type T
    */
   static createSchemaFromConfig<T extends Record<string, FieldSchema>>(config: FormSchemaInitialise): T {
-    // Convert the Schema Initialise data into field schemas
     const schema = Object.fromEntries(
       Object.entries(config).map(([key, config]) => [
         key,
         {
-          fieldName: key, // the field name
-          dataType: config.dataType, // the data type, e.g. String, Number, Date, Boolean
-          caption: config.caption, // the UI text
-          rules: config.rules, // the validation rules
+          fieldName: key,
+          dataType: config.dataType,
+          caption: config.caption,
+          rules: config.rules,
         },
       ]),
-    ) as unknown as T; // Cast to unknown first, then to T
+    ) as unknown as T;
 
-    // Validate that every property of the schema is populated
     const schemaKeys: Array<keyof T> = Object.keys(schema) as Array<keyof T>;
     schemaKeys.forEach((key) => {
       if (!schema[key]) {
@@ -46,4 +44,26 @@ export default class ViewModelBase {
 
     return schema;
   }
+
+  /****************************************************/
+  /* Clone Object                                     */
+  /****************************************************/
+  clone(): this {
+    return new (this.constructor as any)(this.fields);
+  }
+
+  /****************************************************/
+  /* Modify Field Values                              */
+  /****************************************************/
+  cloneWithField(field: FieldModel): this {
+    var oldField = this.fields.get(field.fieldName)!;
+    var model = new (this.constructor as any)(this.fields.set(field.fieldName, field));
+    this.onFieldUpdated(oldField, field);
+    return model;
+  }
+
+  /****************************************************/
+  /* Events
+  /****************************************************/
+  abstract onFieldUpdated(oldField: FieldModel, newField: FieldModel): void;
 }

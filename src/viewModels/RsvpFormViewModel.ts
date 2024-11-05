@@ -79,16 +79,11 @@ export class RsvpFormViewModel extends ViewModelBase {
   }
 
   /****************************************************/
-  /* Modify Field Values                              */
+  /* Events                                           */
   /****************************************************/
-  cloneWithField(field: FieldModel): RsvpFormViewModel {
-    return new RsvpFormViewModel(this.fields.set(field.fieldName, field));
-  }
-
-  /****************************************************/
-  /* Clone Object                                     */
-  /****************************************************/
-  clone(): RsvpFormViewModel {
-    return new RsvpFormViewModel(this.fields);
+  onFieldUpdated(oldField: FieldModel, newField: FieldModel): void {
+    if (newField.fieldName === RsvpFormViewModel.schema.attending.fieldName) {
+      console.log("Attending Status has changed");
+    }
   }
 }

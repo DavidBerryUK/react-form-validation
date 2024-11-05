@@ -97,16 +97,9 @@ export class ContactFormViewModel extends ViewModelBase {
   }
 
   /****************************************************/
-  /* Modify Field Values                              */
+  /* Events                                           */
   /****************************************************/
-  cloneWithField(field: FieldModel): ContactFormViewModel {
-    return new ContactFormViewModel(this.fields.set(field.fieldName, field));
-  }
-
-  /****************************************************/
-  /* Clone Object                                     */
-  /****************************************************/
-  clone(): ContactFormViewModel {
-    return new ContactFormViewModel(this.fields);
+  onFieldUpdated(oldField: FieldModel, newField: FieldModel): void {
+    console.log(`Field ${newField.fieldName} updated from [${oldField.value}] to [${newField.validation}]`);
   }
 }
