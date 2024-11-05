@@ -1,0 +1,143 @@
+.ui-switch {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 24px;
+    vertical-align: middle;
+
+    & > input,
+    input {
+        display: none;
+    }
+
+    .field-label {
+        font-weight: 300;
+        font-style: normal;
+        font-size: 16px;
+        margin-bottom: 8px;
+        margin-left: 2px;
+      } 
+      
+    &-slider {
+        position: absolute;
+        cursor: pointer;
+        border-radius: 34px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+
+        &:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 1px;
+            bottom: 1px;
+            border-radius: 50%;
+            background-color: white;
+            transition: .4s;
+            box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.45);
+        }
+    }
+
+    input:checked ~ .ui-switch-slider {
+        background-color: #007bff;
+
+        &:before {
+            transform: translateX(18px);
+        }
+    }
+
+    &.ui-switch-p1 .ui-switch-slider:before {
+        height: 20px;
+        width: 20px;
+        left: 2px;
+        bottom: 2px;
+    }
+
+    &.ui-switch-p2 .ui-switch-slider:before {
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+    }
+
+    // Colors
+    @each $color, $hex in (
+        primary: #007bff,
+        secondary: #6c757d,
+        success: #28a745,
+        danger: #dc3545,
+        warning: #ffc107,
+        info: #17a2b8,
+        dark: #343a40
+    ) {
+        &.ui-switch-#{$color} input:checked ~ .ui-switch-slider {
+            background-color: $hex;
+        }
+    }
+
+    // Shapes
+    &.ui-switch-round .ui-switch-slider {
+        border-radius: 34px;
+
+        &:before {
+            border-radius: 50%;
+        }
+    }
+
+    &.ui-switch-square .ui-switch-slider {
+        border-radius: 0;
+
+        &:before {
+            border-radius: 0;
+        }
+    }
+
+    // Sizes
+    @each $size, $dimensions, $translateX in (
+        xs: (26px, 16px, 10px),
+        sm: (34px, 20px, 14px),
+        md: (42px, 24px, 18px),
+        lg: (54px, 30px, 24px),
+        xl: (66px, 36px, 30px)
+    ) {
+        &.ui-switch-#{$size} {
+            width: nth($dimensions, 1);
+            height: nth($dimensions, 2);
+
+            input:checked ~ .ui-switch-slider:before {
+                transform: translateX($translateX);
+            }
+
+            .ui-switch-slider:before {
+                height: calc(nth($dimensions, 2) - 2px);
+                width: calc(nth($dimensions, 2) - 2px);
+                left: 1px;
+                bottom: 1px;
+            }
+
+            &.ui-switch-p1 .ui-switch-slider:before {
+                height: calc(nth($dimensions, 2) - 4px);
+                width: calc(nth($dimensions, 2) - 4px);
+                left: 2px;
+                bottom: 2px;
+            }
+
+            &.ui-switch-p2 .ui-switch-slider:before {
+                height: calc(nth($dimensions, 2) - 6px);
+                width: calc(nth($dimensions, 2) - 6px);
+                left: 3px;
+                bottom: 3px;
+            }
+        }
+    }
+
+    // Disabled
+    input:disabled ~ .ui-switch-slider {
+        opacity: 0.5;
+    }
+}
