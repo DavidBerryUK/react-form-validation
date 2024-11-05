@@ -1,24 +1,25 @@
-import { Map } from "immutable";
-import FieldModel, { FieldSchema, FieldTypeString } from "../library/packageViewModelp/base/FieldModel";
+import FieldModel from "../library/packageViewModelp/base/FieldModel";
 import RuleMandatory from "../library/packageViewModelp/validation/rules/RuleMandatory";
 import RuleMaxLength from "../library/packageViewModelp/validation/rules/RuleMaxLength";
 import RuleMinLength from "../library/packageViewModelp/validation/rules/RuleMinLength";
-import ViewModelBase, { FormSchemaInitialise } from "../library/packageViewModelp/base/BaseViewModel";
+import ViewModelBase from "../library/packageViewModelp/base/BaseViewModel";
 import EnumFieldDataType from "../library/packageViewModelp/enums/EnumFieldDataType";
+import ViewModelSchema, { SchemaBase } from "../library/packageViewModelp/base/ViewModelSchema";
+import FieldSchema from "../library/packageViewModelp/base/FieldSchema";
 
-type ContactFormSchema = {
-  forename: FieldSchema;
-  surname: FieldSchema;
-  emailAddress: FieldSchema;
-  message: FieldSchema;
-};
+class ContactViewModelSchema extends ViewModelSchema {
+  fields: SchemaBase = {
+    forename: new FieldSchema("Forename", EnumFieldDataType.string, [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)]),
+    surname: new FieldSchema("Surname", EnumFieldDataType.string, [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)]),
+    emailAddress: new FieldSchema("Email Address", EnumFieldDataType.string, [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(250)]),
+    message: new FieldSchema("Message", EnumFieldDataType.string, [new RuleMandatory(), new RuleMinLength(20), new RuleMaxLength(1000)]),
+  };
 
-const schemaConfig: FormSchemaInitialise = {
-  forename: { caption: "Forename", dataType: EnumFieldDataType.string, rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
-  surname: { caption: "Surname", dataType: EnumFieldDataType.string, rules: [new RuleMandatory(), new RuleMinLength(2), new RuleMaxLength(100)] },
-  emailAddress: { caption: "Email Address", dataType: EnumFieldDataType.string, rules: [new RuleMandatory(), new RuleMinLength(10), new RuleMaxLength(100)] },
-  message: { caption: "Message", dataType: EnumFieldDataType.string, rules: [new RuleMandatory(), new RuleMinLength(20), new RuleMaxLength(1000)] },
-};
+  constructor() {
+    super();
+    this.populateFieldNames();
+  }
+}
 
 /**
  * The Contact Form is imutable, meaning that it is read only and any
@@ -28,49 +29,24 @@ const schemaConfig: FormSchemaInitialise = {
  */
 export class ContactFormViewModel extends ViewModelBase {
   // the schema provides field meta data such as fieldname, ui-caption, data types
-  private static readonly schema: ContactFormSchema = this.createSchemaFromConfig<ContactFormSchema>(schemaConfig);
+  static modelSchema = new ContactViewModelSchema();
 
   /****************************************************/
   /* Initialize ContactFormViewModel with Field Models */
   /****************************************************/
 
-  /**
-   * Creates an instance of ContactFormViewModel populated with initial field values.
-   *
-   * This method dynamically generates a map of FieldModel objects for each form field
-   * defined in the ContactFormViewModel schema. It uses the schema configuration to
-   * create FieldModels, ensuring that any future changes in the schema will
-   * automatically be reflected in the view model setup.
-   *
-   * Process:
-   * 1. `initialValues`: Collects the initial values for each field (forename, surname,
-   *    emailAddress, message) into an object, with keys matching schema fields.
-   *
-   * 2. `fields` Map: Creates an immutable map where each entry corresponds to a field:
-   *     - Keys are derived from `ContactFormViewModel.schema`, representing each field name.
-   *     - Values are `FieldModel` instances, created using the field's schema and initial value.
-   *
-   * This approach leverages the `immutable` library, so each field modification results in a
-   * new ContactFormViewModel instance with only the modified fields replaced, optimizing performance.
-   *
-   * @param forename - Initial value for the "forename" field.
-   * @param surname - Initial value for the "surname" field.
-   * @param emailAddress - Initial value for the "emailAddress" field.
-   * @param message - Initial value for the "message" field.
-   * @returns {ContactFormViewModel} A new instance of ContactFormViewModel with initialized fields.
-   */
-  static CreateViewModel(forename: FieldTypeString, surname: FieldTypeString, emailAddress: FieldTypeString, message: FieldTypeString): ContactFormViewModel {
-    const initialValues = { forename, surname, emailAddress, message };
-
-    // Map field names to FieldModel instances based on the schema and initial values
-    const fields = Map<string, FieldModel>(
-      Object.keys(ContactFormViewModel.schema).map((key) => {
-        const fieldSchema = ContactFormViewModel.schema[key as keyof ContactFormSchema];
-        const fieldValue = initialValues[key as keyof ContactFormSchema];
-        return [fieldSchema.fieldName, FieldModel.fromSchema(fieldSchema, fieldValue)];
-      }),
-    );
-    return new ContactFormViewModel(fields);
+  static CreateViewModel(forename: string, surname: string, emailAddress: string, message: string): ContactFormViewModel {
+    // Define the type for initialValues based on the keys of the modelSchema fields
+    const initialValues: {
+      // this ensures that initial values are spelt correctly
+      [K in keyof ContactViewModelSchema["fields"]]: ContactViewModelSchema["fields"][K];
+    } = {
+      forename,
+      surname,
+      emailAddress,
+      message,
+    } as any;
+    return new ContactFormViewModel(this.createInitialFields(this.modelSchema, initialValues));
   }
 
   static CreateEmptyViewModel(): ContactFormViewModel {
@@ -81,19 +57,19 @@ export class ContactFormViewModel extends ViewModelBase {
   /* GETTERS FOR FIELD VALUES                         *
   /****************************************************/
   get forename(): FieldModel {
-    return this.fields.get(ContactFormViewModel.schema.forename.fieldName)!;
+    return this.fields.get(ContactFormViewModel.modelSchema.fields.forename.fieldName)!;
   }
 
   get surname(): FieldModel {
-    return this.fields.get(ContactFormViewModel.schema.surname.fieldName)!;
+    return this.fields.get(ContactFormViewModel.modelSchema.fields.surname.fieldName)!;
   }
 
   get emailAddress(): FieldModel {
-    return this.fields.get(ContactFormViewModel.schema.emailAddress.fieldName)!;
+    return this.fields.get(ContactFormViewModel.modelSchema.fields.emailAddress.fieldName)!;
   }
 
   get message(): FieldModel {
-    return this.fields.get(ContactFormViewModel.schema.message.fieldName)!;
+    return this.fields.get(ContactFormViewModel.modelSchema.fields.message.fieldName)!;
   }
 
   /****************************************************/

@@ -1,7 +1,8 @@
 import { Map } from "immutable";
-import FieldModel, { FieldSchema } from "./FieldModel";
+import FieldModel from "./FieldModel";
 import IRule from "../validation/interfaces/IRule";
 import EnumFieldDataType from "../enums/EnumFieldDataType";
+import ViewModelSchema from "./ViewModelSchema";
 
 export type FormSchemaInitialise = {
   [key: string]: { dataType: EnumFieldDataType; caption: string; rules?: Array<IRule> };
@@ -17,32 +18,31 @@ export default abstract class ViewModelBase {
     this.fields = fields;
   }
 
-  /**
-   * Creates a schema based on a configuration object
-   * @param config - Configuration for schema initialization
-   * @returns Schema of type T
-   */
-  static createSchemaFromConfig<T extends Record<string, FieldSchema>>(config: FormSchemaInitialise): T {
-    const schema = Object.fromEntries(
-      Object.entries(config).map(([key, config]) => [
-        key,
-        {
-          fieldName: key,
-          dataType: config.dataType,
-          caption: config.caption,
-          rules: config.rules,
-        },
-      ]),
-    ) as unknown as T;
+  static createInitialFields<TSchema extends ViewModelSchema>(
+    schema: TSchema,
+    initialValues: Partial<Record<keyof TSchema["fields"], any>>,
+  ): Map<string, FieldModel> {
+    let fields = Map<string, FieldModel>();
+    // Define the type for keys of initialValues
+    type InitialValueKeys = keyof typeof initialValues;
 
-    const schemaKeys: Array<keyof T> = Object.keys(schema) as Array<keyof T>;
-    schemaKeys.forEach((key) => {
-      if (!schema[key]) {
-        throw new Error(`Missing property in schema: ${String(key)}`);
+    // Get the keys of the RsvpFormViewModel's fields schema
+    const rsvpFieldKeys = Object.keys(schema.fields) as Array<keyof typeof schema.fields>;
+
+    rsvpFieldKeys.forEach((key) => {
+      const fieldKey = key; // No need for type assertion, already a keyof
+
+      const fieldSchema = schema.fields[fieldKey];
+
+      // Ensure the key exists in initialValues
+      if (key in initialValues) {
+        const fieldValue = initialValues[key as InitialValueKeys]; // Now we can safely access it
+        const field = FieldModel.fromSchema(fieldSchema, fieldValue);
+        fields = fields.set(field.fieldName, field);
       }
     });
 
-    return schema;
+    return fields;
   }
 
   /****************************************************/

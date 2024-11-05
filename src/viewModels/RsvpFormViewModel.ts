@@ -1,14 +1,13 @@
 import EnumFieldDataType from "../library/packageViewModelp/enums/EnumFieldDataType";
 import FieldModel from "../library/packageViewModelp/base/FieldModel";
+import FieldSchema from "../library/packageViewModelp/base/FieldSchema";
 import RuleInteger from "../library/packageViewModelp/validation/rules/RuleInteger";
 import RuleMandatory from "../library/packageViewModelp/validation/rules/RuleMandatory";
 import RuleMaxLength from "../library/packageViewModelp/validation/rules/RuleMaxLength";
 import RuleMinLength from "../library/packageViewModelp/validation/rules/RuleMinLength";
 import RuleValueBetween from "../library/packageViewModelp/validation/rules/RuleValueBetween";
 import ViewModelBase from "../library/packageViewModelp/base/BaseViewModel";
-import FieldSchema from "../library/packageViewModelp/base/FieldSchema";
 import ViewModelSchema, { SchemaBase } from "../library/packageViewModelp/base/ViewModelSchema";
-import { Map } from "immutable";
 
 class RsvpViewModelSchema extends ViewModelSchema {
   fields: SchemaBase = {
@@ -45,30 +44,17 @@ export class RsvpFormViewModel extends ViewModelBase {
    * @returns {RsvpFormViewModel} A new instance of RsvpFormViewModel with initialized fields.
    */
   static createViewModel(guestName: string, attending: boolean, numberOfGuests: number): RsvpFormViewModel {
-    const initialValues = { guestName, attending, numberOfGuests };
+    // Define the type for initialValues based on the keys of the modelSchema fields
+    const initialValues: {
+      // this ensures that initial values are spelt correctly
+      [K in keyof RsvpViewModelSchema["fields"]]: RsvpViewModelSchema["fields"][K];
+    } = {
+      guestName,
+      attending,
+      numberOfGuests,
+    } as any;
 
-    let fields = Map<string, FieldModel>();
-
-    // Define the type for keys of initialValues
-    type InitialValueKeys = keyof typeof initialValues;
-
-    // Get the keys of the RsvpFormViewModel's fields schema
-    const rsvpFieldKeys = Object.keys(RsvpFormViewModel.modelSchema.fields) as Array<keyof typeof RsvpFormViewModel.modelSchema.fields>;
-
-    rsvpFieldKeys.forEach((key) => {
-      const fieldKey = key; // No need for type assertion, already a keyof
-
-      const fieldSchema = RsvpFormViewModel.modelSchema.fields[fieldKey];
-
-      // Ensure the key exists in initialValues
-      if (key in initialValues) {
-        const fieldValue = initialValues[key as InitialValueKeys]; // Now we can safely access it
-        const field = FieldModel.fromSchema(fieldSchema, fieldValue);
-        fields = fields.set(field.fieldName, field);
-      }
-    });
-
-    return new RsvpFormViewModel(fields);
+    return new RsvpFormViewModel(this.createInitialFields(this.modelSchema, initialValues));
   }
 
   static CreateEmptyViewModel(): RsvpFormViewModel {

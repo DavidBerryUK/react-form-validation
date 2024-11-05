@@ -1,21 +1,14 @@
 import { Record } from "immutable";
-import FieldValidation from "../validation/models/FieldValidation";
-import IRule from "../validation/interfaces/IRule";
-import IFieldValidation from "../validation/interfaces/IFieldValidation";
 import EnumFieldDataType from "../enums/EnumFieldDataType";
+import FieldSchema from "./FieldSchema";
+import FieldValidation from "../validation/models/FieldValidation";
+import IFieldValidation from "../validation/interfaces/IFieldValidation";
 
 export type FieldTypeString = string | undefined;
 export type FieldTypeNumber = number | undefined;
 export type FieldTypeBoolean = boolean | undefined;
 export type FieldTypeDate = Date | undefined;
 export type FieldValueType = FieldTypeString | FieldTypeNumber | FieldTypeDate | FieldTypeBoolean;
-
-export type FieldSchema = {
-  fieldName: string;
-  dataType: EnumFieldDataType;
-  caption: string;
-  rules: IRule[];
-};
 
 interface FieldViewModelProps {
   dataType: EnumFieldDataType;
