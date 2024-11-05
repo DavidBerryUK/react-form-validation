@@ -83,7 +83,7 @@ export class RsvpFormViewModel extends ViewModelBase {
   /****************************************************/
   onFieldUpdated(oldField: FieldModel, newField: FieldModel): void {
     if (newField.fieldName === RsvpFormViewModel.schema.attending.fieldName) {
-      console.log("Attending Status has changed");
+      console.log(`Attending Status has changed to [${newField.value?.toLocaleString()}]`);
     }
   }
 }
