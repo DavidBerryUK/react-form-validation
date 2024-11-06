@@ -68,8 +68,9 @@ export default abstract class BaseViewModel<T extends BaseViewModel<any>> {
   cloneWithValidateAll(): this {
     // validate form by assinging 'new' field values to every field in the form
     var form = new (this.constructor as any)(this.fields);
-    this.fields.forEach((field) => {
-      form = form.cloneWithField(field.cloneWithValue(field.value));
+    this.fields.forEach((key) => {
+      var field = form.fields.get(key.fieldName);
+      form = form.cloneWithField(field.cloneWithUpdatedValidation());
       form = form.onFieldUpdated(form, field, field);
     });
     return form;

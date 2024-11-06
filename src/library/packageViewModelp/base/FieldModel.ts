@@ -132,6 +132,18 @@ export default class FieldModel extends FieldViewModelRecord {
     return newField;
   }
 
+  cloneWithUpdatedValidation(): FieldModel {
+    var field = this as FieldModel;
+
+    if (this.active) {
+      field.validation?.validate(field);
+    } else {
+      field.validation?.clear();
+    }
+    const errorMessage = field.validation?.validationMessage || "";
+    return field.set("error", errorMessage) as FieldModel;
+  }
+
   /**
    * Creates a clone of the model with a new value, updating the validation error message accordingly.
    */
