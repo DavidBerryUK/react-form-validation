@@ -1,8 +1,11 @@
 import { RsvpFormViewModel } from "../../viewModels/RsvpFormViewModel";
 import FieldModel from "../../library/packageViewModelp/base/FieldModel";
 import React from "react";
+import UIButton from "../UIButton/UIButton";
 import UIField from "../UIField/UIField";
+import UIFormContainer from "../UIField/UIFormContainer";
 import UISwitch from "../UIField/UISwitch";
+import UIToolbar from "../UIToolbar/UIToolbar";
 
 interface IProperties {
   value: RsvpFormViewModel;
@@ -14,15 +17,24 @@ const UIFormRsvpWidget: React.FC<IProperties> = ({ value, onChange }) => {
     onChange(value.cloneWithField(field));
   };
 
+  const handleOnSubmitEvent = () => {
+    onChange(value.cloneWithValidateAll());
+  };
+
+  const handleOnClearEvent = () => {
+    onChange(value.cloneWithClearAll());
+  };
+
   return (
-    <div>
-      <h2>Guest RSVP Form</h2>
-      <div>
-        <UIField value={value.guestName} onChange={handleOnFieldValueChangedEvent} />
-        <UISwitch value={value.attending} onChange={handleOnFieldValueChangedEvent} />
-        <UIField value={value.numberOfGuests} onChange={handleOnFieldValueChangedEvent} />
-      </div>
-    </div>
+    <UIFormContainer title="Guest RSVP Form">
+      <UIField value={value.guestName} onChange={handleOnFieldValueChangedEvent} />
+      <UISwitch value={value.attending} onChange={handleOnFieldValueChangedEvent} />
+      <UIField value={value.numberOfGuests} onChange={handleOnFieldValueChangedEvent} />
+      <UIToolbar>
+        <UIButton title="Clear" clear onClick={handleOnClearEvent} />
+        <UIButton title="Submit" submit onClick={handleOnSubmitEvent} />
+      </UIToolbar>
+    </UIFormContainer>
   );
 };
 

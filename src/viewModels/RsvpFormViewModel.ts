@@ -98,9 +98,12 @@ export class RsvpFormViewModel extends BaseViewModel<RsvpFormViewModel> {
   /****************************************************/
   applyConditionalValidation(model: RsvpFormViewModel): RsvpFormViewModel {
     // Swith validation for number of guests on/off depending on the attending value
+
     if (model.attending.valueAsBoolean) {
+      console.log("    setting number of guests as ACTIVE");
       model = model.cloneWithField(model.numberOfGuests.cloneAsActive());
     } else {
+      console.log("    setting number of guests as INACTIVE");
       model = model.cloneWithField(model.numberOfGuests.cloneAsInactive());
     }
 

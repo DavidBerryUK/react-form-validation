@@ -133,6 +133,30 @@ export default class FieldModel extends FieldViewModelRecord {
   }
 
   /**
+   * Creates a clone of the model with a new value, updating the validation error message accordingly.
+   */
+  cloneAndClear(): FieldModel {
+    let field: FieldModel = this;
+
+    switch (field.dataType) {
+      case EnumFieldDataType.string:
+        field = field.cloneWithValue("") as FieldModel;
+        break;
+      case EnumFieldDataType.number:
+        field = field.cloneWithValue(false) as FieldModel;
+        break;
+      case EnumFieldDataType.boolean:
+        field = field.cloneWithValue(false) as FieldModel;
+        break;
+    }
+    if (field.validation) {
+      field.validation.clear();
+    }
+    field = field.set("error", "") as FieldModel;
+    return field;
+  }
+
+  /**
    * Make field inactive, clear any validation messages
    */
   cloneAsInactive(): FieldModel {
@@ -147,8 +171,6 @@ export default class FieldModel extends FieldViewModelRecord {
   cloneAsActive(): FieldModel {
     this.validation?.validate(this);
     var field = this;
-
-    console.log("TRACK INITIAL VALUE SO DONT ACTIVE VALIDATION ON UNEDITED FIELD");
 
     if (field.valueAsString === "" || field.valueAsNumber === 0) {
       field = field.set("error", "");

@@ -1,0 +1,32 @@
+$submit: #7dc67d;
+$clear: orange;
+
+.ui-button {
+  height: 34px;
+  border-radius: 4px;
+  min-width: 80px;
+  border: solid 2px gray;
+  text-transform: uppercase;
+  background-color: white;
+  font-size: 16px;
+
+  &.submit {
+    background-color: $submit;
+    border-color: lighten($submit, 5);
+
+    &:hover {
+      background-color: lighten($submit, 10);
+      border-color: lighten($submit, 15);
+    }
+  }
+
+  &.clear {
+    background-color: $clear;
+    border-color: lighten($clear, 5);
+
+    &:hover {
+      background-color: lighten($clear, 10);
+      border-color: lighten($clear, 15);
+    }
+  }
+}

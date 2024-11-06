@@ -77,7 +77,6 @@ export class ContactFormViewModel extends BaseViewModel<ContactFormViewModel> {
   /* Form Events                                      */
   /****************************************************/
   onFieldUpdated(model: ContactFormViewModel, oldField: FieldModel, newField: FieldModel): ContactFormViewModel {
-    console.log(`Field ${newField.fieldName} updated from [${oldField.value}] to [${newField.validation}]`);
     return model;
   }
 

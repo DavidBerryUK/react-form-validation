@@ -59,4 +59,8 @@ export default class FieldValidation implements IFieldValidation {
 
     return isValid;
   }
+
+  clear() {
+    this.messages = new Array<string>();
+  }
 }

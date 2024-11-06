@@ -2,6 +2,9 @@ import { ContactFormViewModel } from "../../viewModels/ContactFormViewModel";
 import FieldModel from "../../library/packageViewModelp/base/FieldModel";
 import React from "react";
 import UIField from "../UIField/UIField";
+import UIFormContainer from "../UIField/UIFormContainer";
+import UIButton from "../UIButton/UIButton";
+import UIToolbar from "../UIToolbar/UIToolbar";
 
 interface IProperties {
   value: ContactFormViewModel;
@@ -13,16 +16,25 @@ const UIFormContactWidget: React.FC<IProperties> = ({ value, onChange }) => {
     onChange(value.cloneWithField(field));
   };
 
+  const handleOnSubmitEvent = () => {
+    onChange(value.cloneWithValidateAll());
+  };
+
+  const handleOnClearEvent = () => {
+    onChange(value.cloneWithClearAll());
+  };
+
   return (
-    <div>
-      <h2>Contact Form</h2>
-      <div>
-        <UIField value={value.forename} onChange={handleOnFieldValueChangedEvent} />
-        <UIField value={value.surname} onChange={handleOnFieldValueChangedEvent} />
-        <UIField value={value.emailAddress} onChange={handleOnFieldValueChangedEvent} />
-        <UIField value={value.message} onChange={handleOnFieldValueChangedEvent} />
-      </div>
-    </div>
+    <UIFormContainer title="Contact Form">
+      <UIField value={value.forename} onChange={handleOnFieldValueChangedEvent} />
+      <UIField value={value.surname} onChange={handleOnFieldValueChangedEvent} />
+      <UIField value={value.emailAddress} onChange={handleOnFieldValueChangedEvent} />
+      <UIField value={value.message} onChange={handleOnFieldValueChangedEvent} />
+      <UIToolbar>
+        <UIButton title="Clear" clear onClick={handleOnClearEvent} />
+        <UIButton title="Submit" submit onClick={handleOnSubmitEvent} />
+      </UIToolbar>
+    </UIFormContainer>
   );
 };
 

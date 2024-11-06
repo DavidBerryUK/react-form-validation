@@ -63,6 +63,36 @@ export default abstract class BaseViewModel<T extends BaseViewModel<any>> {
   }
 
   /****************************************************/
+  /* Validate All                                     */
+  /****************************************************/
+  cloneWithValidateAll(): this {
+    // validate form by assinging 'new' field values to every field in the form
+    var form = new (this.constructor as any)(this.fields);
+    this.fields.forEach((field) => {
+      form = form.cloneWithField(field.cloneWithValue(field.value));
+      form = form.onFieldUpdated(form, field, field);
+    });
+    return form;
+  }
+
+  /****************************************************/
+  /* Validate All                                     */
+  /****************************************************/
+  cloneWithClearAll(): this {
+    // validate form by assinging 'new' field values to every field in the form
+    var form = new (this.constructor as any)(this.fields);
+
+    this.fields.forEach((keyField) => {
+      var oldField = this.fields.get(keyField.fieldName);
+      var field = form.fields.get(keyField.fieldName);
+      form = form.cloneWithField(field.cloneAndClear());
+      form = form.onFieldUpdated(form, oldField, field);
+    });
+
+    return form;
+  }
+
+  /****************************************************/
   /* Events
   /****************************************************/
   abstract onFieldUpdated(model: T, oldField: FieldModel, newField: FieldModel): T;
