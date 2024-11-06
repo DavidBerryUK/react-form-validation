@@ -44,7 +44,6 @@ export default class FieldValidation implements IFieldValidation {
   }
 
   validate(field: FieldModel) {
-    console.log(`--------------validating------------- with value ${field.value}`);
     var isValid = true;
     this.messages = new Array<string>();
     this.fieldCaption = field.caption;

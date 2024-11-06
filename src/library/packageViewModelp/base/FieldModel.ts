@@ -122,17 +122,42 @@ export default class FieldModel extends FieldViewModelRecord {
    */
   cloneWithValue(newValue: FieldValueType): FieldModel {
     var newField = this.set("value", newValue);
-    this.validation?.validate(newField);
-    const errorMessage = this.validation?.validationMessage || "";
-    return newField.set("error", errorMessage) as FieldModel;
+
+    if (newField.active) {
+      this.validation?.validate(newField);
+      const errorMessage = this.validation?.validationMessage || "";
+      return newField.set("error", errorMessage) as FieldModel;
+    }
+
+    return newField;
   }
 
+  /**
+   * Make field inactive, clear any validation messages
+   */
   cloneAsInactive(): FieldModel {
-    return this.set("active", false);
+    let field = this.set("error", "") as FieldModel;
+    field = field.set("active", false);
+    return field;
   }
 
+  /**
+   * make field active, perform validation
+   */
   cloneAsActive(): FieldModel {
-    return this.set("active", true);
+    this.validation?.validate(this);
+    var field = this;
+
+    console.log("TRACK INITIAL VALUE SO DONT ACTIVE VALIDATION ON UNEDITED FIELD");
+
+    if (field.valueAsString === "" || field.valueAsNumber === 0) {
+      field = field.set("error", "");
+    } else {
+      const errorMessage = this.validation?.validationMessage || "";
+      field = field.set("error", errorMessage);
+    }
+    field = field.set("active", true);
+    return field;
   }
 
   /**

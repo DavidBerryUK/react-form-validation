@@ -2,14 +2,20 @@ import { Map } from "immutable";
 import FieldModel from "./FieldModel";
 import ViewModelSchema from "./ViewModelSchema";
 
-export default abstract class BaseViewModel<T> {
+export default abstract class BaseViewModel<T extends BaseViewModel<any>> {
   /****************************************************/
   /* Actual Field Values                              */
   /****************************************************/
   readonly fields: Map<string, FieldModel>;
 
-  constructor(fields: Map<string, FieldModel>) {
+  public constructor(fields: Map<string, FieldModel>) {
     this.fields = fields;
+  }
+
+  static create<T extends BaseViewModel<any>>(this: new (fields: Map<string, FieldModel>) => T, fields: Map<string, FieldModel>): T {
+    var model = new this(fields);
+    model = model.onInitialise(model);
+    return model;
   }
 
   static createInitialFields<TSchema extends ViewModelSchema>(
@@ -60,4 +66,5 @@ export default abstract class BaseViewModel<T> {
   /* Events
   /****************************************************/
   abstract onFieldUpdated(model: T, oldField: FieldModel, newField: FieldModel): T;
+  abstract onInitialise(model: T): T;
 }

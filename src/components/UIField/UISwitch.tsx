@@ -17,11 +17,14 @@ const UISwitch: React.FC<IProperties> = (props) => {
 
   const handleOnClickEvent = (event: React.MouseEvent<HTMLInputElement>) => {
     if (props.onChange) {
-      console.log("handle..");
       event.stopPropagation();
       props.onChange(props.value.cloneWithValue(!props.value.valueAsBoolean));
     }
   };
+
+  if (!props.value.active) {
+    return null;
+  }
 
   return (
     <div className="ui-switch-control">

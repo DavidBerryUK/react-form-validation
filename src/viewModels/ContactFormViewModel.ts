@@ -46,7 +46,8 @@ export class ContactFormViewModel extends BaseViewModel<ContactFormViewModel> {
       emailAddress,
       message,
     } as any;
-    return new ContactFormViewModel(this.createInitialFields(this.modelSchema, initialValues));
+    var form = ContactFormViewModel.create(this.createInitialFields(this.modelSchema, initialValues));
+    return form;
   }
 
   static CreateEmptyViewModel(): ContactFormViewModel {
@@ -73,10 +74,14 @@ export class ContactFormViewModel extends BaseViewModel<ContactFormViewModel> {
   }
 
   /****************************************************/
-  /* Events                                           */
+  /* Form Events                                      */
   /****************************************************/
   onFieldUpdated(model: ContactFormViewModel, oldField: FieldModel, newField: FieldModel): ContactFormViewModel {
     console.log(`Field ${newField.fieldName} updated from [${oldField.value}] to [${newField.validation}]`);
+    return model;
+  }
+
+  onInitialise(model: ContactFormViewModel): ContactFormViewModel {
     return model;
   }
 }

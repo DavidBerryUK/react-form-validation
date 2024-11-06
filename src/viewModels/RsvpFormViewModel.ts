@@ -54,7 +54,8 @@ export class RsvpFormViewModel extends BaseViewModel<RsvpFormViewModel> {
       numberOfGuests,
     } as any;
 
-    return new RsvpFormViewModel(this.createInitialFields(this.modelSchema, initialValues));
+    var form = RsvpFormViewModel.create(this.createInitialFields(this.modelSchema, initialValues));
+    return form;
   }
 
   static CreateEmptyViewModel(): RsvpFormViewModel {
@@ -78,12 +79,31 @@ export class RsvpFormViewModel extends BaseViewModel<RsvpFormViewModel> {
   }
 
   /****************************************************/
-  /* Events                                           */
+  /* Form Events                                      */
   /****************************************************/
   onFieldUpdated(model: RsvpFormViewModel, oldField: FieldModel, newField: FieldModel): RsvpFormViewModel {
-    if (newField.fieldName === RsvpFormViewModel.modelSchema.fields.attending.fieldName) {
-      console.log(`Attending Status has changed to [${newField.value?.toLocaleString()}]`);
+    if (newField.fieldName === model.attending.fieldName) {
+      model = this.applyConditionalValidation(model);
     }
+    return model;
+  }
+
+  onInitialise(model: RsvpFormViewModel): RsvpFormViewModel {
+    model = model.applyConditionalValidation(model);
+    return model;
+  }
+
+  /****************************************************/
+  /* Conditional Validation
+  /****************************************************/
+  applyConditionalValidation(model: RsvpFormViewModel): RsvpFormViewModel {
+    // Swith validation for number of guests on/off depending on the attending value
+    if (model.attending.valueAsBoolean) {
+      model = model.cloneWithField(model.numberOfGuests.cloneAsActive());
+    } else {
+      model = model.cloneWithField(model.numberOfGuests.cloneAsInactive());
+    }
+
     return model;
   }
 }

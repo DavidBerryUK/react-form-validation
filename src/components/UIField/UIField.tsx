@@ -26,6 +26,10 @@ const UIField: React.FC<IProperties> = (props) => {
     }
   };
 
+  if (!props.value.active) {
+    return null;
+  }
+
   const showHelpMessage = !!props.value.help?.length;
   const showErrorMessage = !!props.value.error.length;
 
