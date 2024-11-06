@@ -2,7 +2,7 @@ import FieldModel from "../library/packageViewModelp/base/FieldModel";
 import RuleMandatory from "../library/packageViewModelp/validation/rules/RuleMandatory";
 import RuleMaxLength from "../library/packageViewModelp/validation/rules/RuleMaxLength";
 import RuleMinLength from "../library/packageViewModelp/validation/rules/RuleMinLength";
-import ViewModelBase from "../library/packageViewModelp/base/BaseViewModel";
+import BaseViewModel from "../library/packageViewModelp/base/BaseViewModel";
 import EnumFieldDataType from "../library/packageViewModelp/enums/EnumFieldDataType";
 import ViewModelSchema, { SchemaBase } from "../library/packageViewModelp/base/ViewModelSchema";
 import FieldSchema from "../library/packageViewModelp/base/FieldSchema";
@@ -27,7 +27,7 @@ class ContactViewModelSchema extends ViewModelSchema {
  * only the changes fields have a new instance, resulting in faster mutations
  * and reduction in memory changes
  */
-export class ContactFormViewModel extends ViewModelBase {
+export class ContactFormViewModel extends BaseViewModel<ContactFormViewModel> {
   // the schema provides field meta data such as fieldname, ui-caption, data types
   static modelSchema = new ContactViewModelSchema();
 
@@ -75,7 +75,8 @@ export class ContactFormViewModel extends ViewModelBase {
   /****************************************************/
   /* Events                                           */
   /****************************************************/
-  onFieldUpdated(oldField: FieldModel, newField: FieldModel): void {
+  onFieldUpdated(model: ContactFormViewModel, oldField: FieldModel, newField: FieldModel): ContactFormViewModel {
     console.log(`Field ${newField.fieldName} updated from [${oldField.value}] to [${newField.validation}]`);
+    return model;
   }
 }

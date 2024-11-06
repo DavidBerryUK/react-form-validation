@@ -3,29 +3,33 @@ import IPropDisabled from "../../properties/IPropDisabled";
 import IPropValue from "../../properties/IPropValue";
 import FieldModel from "../../library/packageViewModelp/base/FieldModel";
 import IPropOnChange from "../../properties/IPropOnChange";
+import UILabel from "./UILabel";
 
 type IProperties = IPropDisabled & IPropValue<FieldModel> & IPropOnChange<FieldModel>;
 
 const UISwitch: React.FC<IProperties> = (props) => {
-  const handleOnChangeEvent = () => {
+  const handleOnChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
+      event.stopPropagation();
       props.onChange(props.value.cloneWithValue(!props.value.valueAsBoolean));
     }
   };
 
   const handleOnClickEvent = (event: React.MouseEvent<HTMLInputElement>) => {
     if (props.onChange) {
+      console.log("handle..");
+      event.stopPropagation();
       props.onChange(props.value.cloneWithValue(!props.value.valueAsBoolean));
     }
   };
 
   return (
-    <div className="ui-switch">
-      <label className="field-label">
-        {props.value.caption}
-        <input type="checkbox" checked={props.value.valueAsBoolean} onClick={handleOnClickEvent} onChange={handleOnChangeEvent} />
+    <div className="ui-switch-control">
+      <UILabel value={props.value} />
+      <div className="ui-switch" onClick={handleOnClickEvent}>
+        <input id={props.value.fieldName} type="checkbox" checked={props.value.valueAsBoolean} onClick={handleOnClickEvent} onChange={handleOnChangeEvent} />
         <span className="ui-switch-slider"></span>
-      </label>
+      </div>
     </div>
   );
 };

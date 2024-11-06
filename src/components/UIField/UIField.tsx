@@ -1,11 +1,12 @@
+import EnumFieldDataType from "../../library/packageViewModelp/enums/EnumFieldDataType";
 import FieldModel from "../../library/packageViewModelp/base/FieldModel";
 import IPropDisabled from "../../properties/IPropDisabled";
 import IPropOnChange from "../../properties/IPropOnChange";
 import IPropPlaceholder from "../../properties/IPropPlaceholder";
 import IPropValue from "../../properties/IPropValue";
 import React from "react";
+import UILabel from "./UILabel";
 import UIShowIfTrue from "../UIShowIfTrue/UIShowIfTrue";
-import EnumFieldDataType from "../../library/packageViewModelp/enums/EnumFieldDataType";
 
 type IProperties = IPropDisabled & IPropPlaceholder & IPropValue<FieldModel> & IPropOnChange<FieldModel>;
 
@@ -25,9 +26,10 @@ const UIField: React.FC<IProperties> = (props) => {
     }
   };
 
-  const inputStyle = `field-text`;
   const showHelpMessage = !!props.value.help?.length;
   const showErrorMessage = !!props.value.error.length;
+
+  const inputStyle = `field-text ${showErrorMessage ? "error" : ""}`;
 
   let inputType: "text" | "number" | "checkbox" | "date" = "text";
 
@@ -48,12 +50,10 @@ const UIField: React.FC<IProperties> = (props) => {
 
   return (
     <div className="ui-field">
-      <label htmlFor="first_name" aria-label={props.value.caption} className="field-label">
-        {props.value.caption}
-      </label>
+      <UILabel value={props.value} />
       <input
         type={inputType}
-        id="first_name"
+        id={props.value.fieldName}
         value={props.value.value as string}
         disabled={props.disabled}
         className={inputStyle}
@@ -62,10 +62,10 @@ const UIField: React.FC<IProperties> = (props) => {
         autoComplete="off"
       />
       <UIShowIfTrue value={showHelpMessage}>
-        <p className="text-muted-foreground text-sm">{props.value.help}</p>
+        <div className="label-help">{props.value.help}</div>
       </UIShowIfTrue>
       <UIShowIfTrue value={showErrorMessage}>
-        <p className="text-sm text-red-600">{props.value.error}</p>
+        <div className="label-error">{props.value.error}</div>
       </UIShowIfTrue>
     </div>
   );

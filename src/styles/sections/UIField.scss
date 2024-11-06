@@ -3,22 +3,44 @@
   flex-direction: column;
   margin-bottom: 16px;
 
-  .field-label {
-    font-weight: 300;
+  .field-text {
     font-style: normal;
     font-size: 16px;
-    margin-bottom: 8px;
-    margin-left: 2px;
-  }
-
-  .field-text {
-    font-weight: 400;
-    font-style: normal;
-    font-size: 18px;
     padding: 6px;
     padding-left: 8px;
     padding-right: 8px;
-    border: solid 1px black;
+    border: solid 2px black;
     border-radius: 4px;
+
+    &.error {
+      border: solid 2px red;
+    }
+
+    &.error:focus {
+      border-color: red;
+      outline: none;
+    }
+  }
+
+  .label-error,
+  label-help {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 2px;
+    margin-left: 1px;
+    margin-right: 1px;
+    padding: 2px;
+    padding-left: 8px;
+    border-radius: 4px;
+  }
+
+  .label-error {
+    color: darken(red, 5);
+    background-color: lighten(red, 40);
+  }
+
+  .label-help {
+    color: darken(green, 5);
+    background-color: lighten(green, 40);
   }
 }

@@ -6,7 +6,7 @@ import RuleMandatory from "../library/packageViewModelp/validation/rules/RuleMan
 import RuleMaxLength from "../library/packageViewModelp/validation/rules/RuleMaxLength";
 import RuleMinLength from "../library/packageViewModelp/validation/rules/RuleMinLength";
 import RuleValueBetween from "../library/packageViewModelp/validation/rules/RuleValueBetween";
-import ViewModelBase from "../library/packageViewModelp/base/BaseViewModel";
+import BaseViewModel from "../library/packageViewModelp/base/BaseViewModel";
 import ViewModelSchema, { SchemaBase } from "../library/packageViewModelp/base/ViewModelSchema";
 
 class RsvpViewModelSchema extends ViewModelSchema {
@@ -28,7 +28,7 @@ class RsvpViewModelSchema extends ViewModelSchema {
  * only the changes fields have a new instance, resulting in faster mutations
  * and reduction in memory changes
  */
-export class RsvpFormViewModel extends ViewModelBase {
+export class RsvpFormViewModel extends BaseViewModel<RsvpFormViewModel> {
   // the schema provides field meta data such as fieldname, ui-caption, data types
 
   static modelSchema = new RsvpViewModelSchema();
@@ -80,9 +80,10 @@ export class RsvpFormViewModel extends ViewModelBase {
   /****************************************************/
   /* Events                                           */
   /****************************************************/
-  onFieldUpdated(oldField: FieldModel, newField: FieldModel): void {
+  onFieldUpdated(model: RsvpFormViewModel, oldField: FieldModel, newField: FieldModel): RsvpFormViewModel {
     if (newField.fieldName === RsvpFormViewModel.modelSchema.fields.attending.fieldName) {
       console.log(`Attending Status has changed to [${newField.value?.toLocaleString()}]`);
     }
+    return model;
   }
 }

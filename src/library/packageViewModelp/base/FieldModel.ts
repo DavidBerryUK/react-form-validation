@@ -18,6 +18,7 @@ interface FieldViewModelProps {
   error: string;
   help: string;
   validation: IFieldValidation | undefined;
+  active: boolean;
 }
 
 const FieldViewModelRecord = Record<FieldViewModelProps>({
@@ -28,6 +29,7 @@ const FieldViewModelRecord = Record<FieldViewModelProps>({
   help: "",
   value: undefined,
   validation: undefined,
+  active: true,
 });
 
 export default class FieldModel extends FieldViewModelRecord {
@@ -90,6 +92,10 @@ export default class FieldModel extends FieldViewModelRecord {
     return this.get("dataType");
   }
 
+  get active(): boolean {
+    return this.get("active");
+  }
+
   /**
    * Retrieves the numeric value if applicable.
    */
@@ -97,6 +103,9 @@ export default class FieldModel extends FieldViewModelRecord {
     return this.value as FieldTypeNumber;
   }
 
+  /**
+   * Retrieves the boolean value if applicable.
+   */
   get valueAsBoolean(): FieldTypeBoolean {
     return this.value as FieldTypeBoolean;
   }
@@ -116,6 +125,14 @@ export default class FieldModel extends FieldViewModelRecord {
     this.validation?.validate(newField);
     const errorMessage = this.validation?.validationMessage || "";
     return newField.set("error", errorMessage) as FieldModel;
+  }
+
+  cloneAsInactive(): FieldModel {
+    return this.set("active", false);
+  }
+
+  cloneAsActive(): FieldModel {
+    return this.set("active", true);
   }
 
   /**

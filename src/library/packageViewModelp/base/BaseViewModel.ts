@@ -1,14 +1,8 @@
 import { Map } from "immutable";
 import FieldModel from "./FieldModel";
-import IRule from "../validation/interfaces/IRule";
-import EnumFieldDataType from "../enums/EnumFieldDataType";
 import ViewModelSchema from "./ViewModelSchema";
 
-export type FormSchemaInitialise = {
-  [key: string]: { dataType: EnumFieldDataType; caption: string; rules?: Array<IRule> };
-};
-
-export default abstract class ViewModelBase {
+export default abstract class BaseViewModel<T> {
   /****************************************************/
   /* Actual Field Values                              */
   /****************************************************/
@@ -58,12 +52,12 @@ export default abstract class ViewModelBase {
   cloneWithField(field: FieldModel): this {
     var oldField = this.fields.get(field.fieldName)!;
     var model = new (this.constructor as any)(this.fields.set(field.fieldName, field));
-    this.onFieldUpdated(oldField, field);
+    model = this.onFieldUpdated(model, oldField, field);
     return model;
   }
 
   /****************************************************/
   /* Events
   /****************************************************/
-  abstract onFieldUpdated(oldField: FieldModel, newField: FieldModel): void;
+  abstract onFieldUpdated(model: T, oldField: FieldModel, newField: FieldModel): T;
 }
