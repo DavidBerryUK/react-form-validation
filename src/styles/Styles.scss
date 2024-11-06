@@ -5,3 +5,11 @@
 @forward "./sections/UILabel.scss";
 @forward "./sections/UISwitch.scss";
 @forward "./sections/UIToolbar.scss";
+
+.ui-app-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 8px;
+}
