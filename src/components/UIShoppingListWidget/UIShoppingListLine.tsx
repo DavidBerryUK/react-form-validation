@@ -25,16 +25,20 @@ const UIShoppingListLine: React.FC<IProperties> = ({ value, onChange }) => {
   };
 
   return (
-    <UIFormContainer title="Shopping List">
-      <UIField value={value.product} onChange={handleOnFieldValueChangedEvent} />
-      <UIField value={value.price} onChange={handleOnFieldValueChangedEvent} />
-      <UIField value={value.quantity} onChange={handleOnFieldValueChangedEvent} />
-      <UIField value={value.total} onChange={handleOnFieldValueChangedEvent} />
-      <UIToolbar>
-        <UIButton title="Clear" clear onClick={handleOnClearEvent} />
-        <UIButton title="Submit" submit onClick={handleOnSubmitEvent} />
-      </UIToolbar>
-    </UIFormContainer>
+    <div className="ui-shopping-list-app">
+      <UIFormContainer title="Shopping List Single Line">
+        <div className="ui-shopping-line">
+          <UIField className="product" value={value.product} onChange={handleOnFieldValueChangedEvent} />
+          <UIField className="price" value={value.price} onChange={handleOnFieldValueChangedEvent} />
+          <UIField className="quantity" value={value.quantity} onChange={handleOnFieldValueChangedEvent} />
+          <UIField className="total" value={value.total} onChange={handleOnFieldValueChangedEvent} />
+        </div>
+        <UIToolbar>
+          <UIButton title="Clear" clear onClick={handleOnClearEvent} />
+          <UIButton title="Submit" submit onClick={handleOnSubmitEvent} />
+        </UIToolbar>
+      </UIFormContainer>
+    </div>
   );
 };
 

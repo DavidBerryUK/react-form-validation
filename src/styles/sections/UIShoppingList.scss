@@ -1,0 +1,22 @@
+.ui-shopping-list-app {
+  .ui-shopping-line {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2px;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 6px;
+    .product {
+      min-width: 200px;
+    }
+    .price,
+    .quantity,
+    .total {
+      min-width: 100px;
+      input {
+        width: 80px;
+        text-align: right;
+      }
+    }
+  }
+}

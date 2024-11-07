@@ -7,8 +7,9 @@ import IPropValue from "../../properties/IPropValue";
 import React from "react";
 import UILabel from "./UILabel";
 import UIShowIfTrue from "../UIShowIfTrue/UIShowIfTrue";
+import IPropClassName from "../../properties/IPropClassName";
 
-type IProperties = IPropDisabled & IPropPlaceholder & IPropValue<FieldModel> & IPropOnChange<FieldModel>;
+type IProperties = IPropDisabled & IPropPlaceholder & IPropValue<FieldModel> & IPropOnChange<FieldModel> & IPropClassName;
 
 /**
  * Common Text Field
@@ -36,6 +37,7 @@ const UIField: React.FC<IProperties> = (props) => {
   const inputStyle = `field-text ${showErrorMessage ? "error" : ""}`;
 
   let inputType: "text" | "number" | "checkbox" | "date" = "text";
+  const className = `ui-field ${props.className ?? ""}`;
 
   switch (props.value.dataType) {
     case EnumFieldDataType.boolean:
@@ -53,7 +55,7 @@ const UIField: React.FC<IProperties> = (props) => {
   }
 
   return (
-    <div className="ui-field">
+    <div className={className}>
       <UILabel value={props.value} />
       <input
         type={inputType}
