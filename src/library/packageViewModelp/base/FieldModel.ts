@@ -53,6 +53,18 @@ export default class FieldModel extends FieldViewModelRecord {
     });
   }
 
+  public static create(fieldName: string, caption: string, dataType: EnumFieldDataType, value: FieldValueType) {
+    return new FieldModel(
+      fieldName, // Field name
+      dataType, // Data Type, e.g. String, Number, Boolean, Date
+      caption, // Caption displayed on the UI
+      value, // Actual value
+      "", // Error message
+      "", // help message
+      new FieldValidation([]), // validation rules
+    );
+  }
+
   /**
    * Factory method to create a FieldModel from a schema.
    */

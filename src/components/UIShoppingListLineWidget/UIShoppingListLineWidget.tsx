@@ -11,7 +11,7 @@ interface IProperties {
   onChange: (form: ShoppingListLineViewModel) => void;
 }
 
-const UIShoppingListLine: React.FC<IProperties> = ({ value, onChange }) => {
+const UIShoppingListLineWidget: React.FC<IProperties> = ({ value, onChange }) => {
   const handleOnFieldValueChangedEvent = (field: FieldModel) => {
     onChange(value.cloneWithField(field));
   };
@@ -42,4 +42,4 @@ const UIShoppingListLine: React.FC<IProperties> = ({ value, onChange }) => {
   );
 };
 
-export default UIShoppingListLine;
+export default UIShoppingListLineWidget;
