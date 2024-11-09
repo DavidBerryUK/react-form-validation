@@ -73,7 +73,23 @@ export class PartLineViewModel extends PartLineRecord {
   }
 
   cloneWithField(field: FieldModel): PartLineViewModel {
-    const model = this.set(field.fieldName as keyof IPartLineParameters, field) as PartLineViewModel;
+    var model = this.set(field.fieldName as keyof IPartLineParameters, field) as PartLineViewModel;
+    model = model.updateCalculations(model);
+    return model;
+  }
+
+  private updateCalculations(model: PartLineViewModel): PartLineViewModel {
+    // Update Line Total
+    var price = model.price.valueAsNumber;
+    var quantity = model.quantity.valueAsNumber;
+    if (price && quantity) {
+      var total = price * quantity;
+      if (model.lineTotal.valueAsNumber !== total) {
+        var field = model.lineTotal.cloneWithValue(total);
+        model = model.set(field.fieldName as keyof IPartLineParameters, field) as PartLineViewModel;
+      }
+    }
+
     return model;
   }
 }
@@ -166,6 +182,30 @@ export class LabourLineViewModel extends LabourLineRecord {
 
   cloneWithField(field: FieldModel): LabourLineViewModel {
     const model = this.set(field.fieldName as keyof ILabourLineParameters, field) as LabourLineViewModel;
+    return this.updateCalculations(model);
+  }
+
+  /****************************************************/
+  /* Part Line Management
+  /****************************************************/
+  addPartLine(): LabourLineViewModel {
+    var model = this.clone();
+    model = model.set(labourLineFieldNames.partLines, model.partLines.push(new PartLineViewModel()));
+    return model;
+  }
+
+  private updateCalculations(model: LabourLineViewModel): LabourLineViewModel {
+    // Update Line Total
+    var labourRate = model.labourRate.valueAsNumber;
+    var hours = model.hours.valueAsNumber;
+    if (labourRate && hours) {
+      var total = labourRate * hours;
+      if (model.lineTotal.valueAsNumber !== total) {
+        var field = model.labourTotal.cloneWithValue(total);
+        model = model.set(field.fieldName as keyof ILabourLineParameters, field) as LabourLineViewModel;
+      }
+    }
+
     return model;
   }
 }
@@ -239,6 +279,14 @@ export default class OrderViewModel extends OrderRecord {
 
   get labourLines(): List<LabourLineViewModel> {
     return this.get(orderFieldNames.labourLines) as List<LabourLineViewModel>;
+  }
+  /****************************************************/
+  /* Labour Line Management
+/****************************************************/
+  addLabourLine(): OrderViewModel {
+    var model = this.clone();
+    model = model.set(orderFieldNames.labourLines, model.labourLines.push(new LabourLineViewModel()));
+    return model;
   }
 
   /****************************************************/

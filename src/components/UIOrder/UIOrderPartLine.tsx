@@ -2,7 +2,7 @@ import { PartLineViewModel } from "./models/OrderViewModel";
 import FieldModel from "../../library/packageViewModelp/base/FieldModel";
 import React from "react";
 import UIField from "../UIField/UIField";
-import UIFormContainer from "../UIField/UIFormContainer";
+import UIButton from "../UIButton/UIButton";
 
 interface IProperties {
   value: PartLineViewModel;
@@ -14,15 +14,19 @@ const UIOrderPartLine: React.FC<IProperties> = ({ value, onChange }) => {
     onChange(value.cloneWithField(field));
   };
 
+  const handleDeleteLineEvent = () => {};
+
   return (
-    <UIFormContainer title="Part Line">
+    <div className="ui-part-line">
+      <h3>Part</h3>
       <UIField value={value.code} onChange={handleOnFieldValueChangedEvent} />
       <UIField value={value.description} onChange={handleOnFieldValueChangedEvent} />
       <UIField value={value.price} onChange={handleOnFieldValueChangedEvent} />
       <UIField value={value.quantity} onChange={handleOnFieldValueChangedEvent} />
       <UIField value={value.discountPercentage} onChange={handleOnFieldValueChangedEvent} />
       <UIField value={value.lineTotal} onChange={handleOnFieldValueChangedEvent} />
-    </UIFormContainer>
+      <UIButton title="Delete" clear onClick={handleDeleteLineEvent} />
+    </div>
   );
 };
 

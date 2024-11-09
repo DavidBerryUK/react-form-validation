@@ -6,6 +6,8 @@ import UIFormContactWidget from "../UIFormContactWidget/UIFormContactWidget";
 import UIFormRsvpWidget from "../UIFormRsvpWidget/UIFormRsvpWidget";
 import UIShoppingListLineWidget from "../UIShoppingListLineWidget/UIShoppingListLineWidget";
 import UITestHostOrderPartLine from "../UIOrder/UITestHostOrderPartLine";
+import UITestHostOrderLabourLine from "../UIOrder/UITestHostOrderLabourLine";
+import UITestHostOrderLines from "../UIOrder/UITestHostOrderLines";
 
 const UIApp: React.FC = () => {
   const [contactForm, setContactForm] = useState<ContactFormViewModel>(ContactFormViewModel.CreateEmptyViewModel());
@@ -29,7 +31,9 @@ const UIApp: React.FC = () => {
       <UIFormContactWidget value={contactForm} onChange={handleOnContactFormChangeEvent} />
       <UIFormRsvpWidget value={rsvpForm} onChange={handleOnRsvpFormChangeEvent} />
       <UIShoppingListLineWidget value={shoppingListLine} onChange={handleOnShoppingListLineChangeEvent} />
+      <UITestHostOrderLabourLine />
       <UITestHostOrderPartLine />
+      <UITestHostOrderLines />
     </div>
   );
 };
