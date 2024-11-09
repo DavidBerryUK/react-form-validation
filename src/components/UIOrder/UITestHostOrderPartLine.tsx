@@ -1,4 +1,4 @@
-import { PartLineViewModel } from "./models/OrderViewModel";
+import { PartLineViewModel } from "./models/PartLineViewModel";
 import React, { useState } from "react";
 import UIOrderPartLine from "./UIOrderPartLine";
 

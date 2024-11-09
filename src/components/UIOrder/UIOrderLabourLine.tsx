@@ -1,8 +1,10 @@
-import { LabourLineViewModel } from "./models/OrderViewModel";
+import { LabourLineViewModel } from "./models/LabourLineViewModel";
+import { PartLineViewModel } from "./models/PartLineViewModel";
 import FieldModel from "../../library/packageViewModelp/base/FieldModel";
 import React from "react";
-import UIField from "../UIField/UIField";
 import UIButton from "../UIButton/UIButton";
+import UIField from "../UIField/UIField";
+import UIOrderPartLine from "./UIOrderPartLine";
 
 interface IProperties {
   value: LabourLineViewModel;
@@ -22,6 +24,8 @@ const UIOrderLabourLine: React.FC<IProperties> = ({ value, onChange }) => {
     //onchange(value.addNewPartLine());
   };
 
+  const handleOnPartLineChangeEvent = (value: PartLineViewModel) => {};
+
   return (
     <div className="ui-labour-line">
       <h3>Labour Line </h3>
@@ -33,6 +37,11 @@ const UIOrderLabourLine: React.FC<IProperties> = ({ value, onChange }) => {
       <UIField value={value.lineTotal} onChange={handleOnFieldValueChangedEvent} />
       <UIButton title="Add Part" clear onClick={handleAddPartLineEvent} />
       <UIButton title="Delete" clear onClick={handleDeleteLineEvent} />
+      <div>
+        {value.partLines.map((line) => (
+          <UIOrderPartLine key={line.key} value={line} onChange={handleOnPartLineChangeEvent} />
+        ))}
+      </div>
     </div>
   );
 };
