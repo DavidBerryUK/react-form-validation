@@ -60,7 +60,7 @@ export class LabourLineViewModel extends LabourLineRecord {
   }
 
   /****************************************************/
-  /* Getters
+  /* Getters                                          */
   /****************************************************/
   get key(): string {
     return this.get(labourLineFieldNames.key) as string;

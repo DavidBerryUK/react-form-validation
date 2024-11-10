@@ -11,24 +11,51 @@ interface IProperties {
   onDelete: (value: LabourLineViewModel) => void;
 }
 
+/**
+ * Display a single labour line, this will also display a collection
+ * of child part lines
+ */
 const UIOrderLabourLine: React.FC<IProperties> = ({ value, onChange, onDelete }) => {
+  /****************************************************/
+  /* Event Handlers                                   */
+  /****************************************************/
+
+  /**
+   * a field has been updated on this Labour line. this updated the
+   * labour line view model and raises event to update the order model
+   */
   const handleOnFieldValueChangedEvent = (field: FieldModel) => {
     onChange(value.cloneWithField(field));
   };
 
+  /**
+   * add a new part line. This adds the part line to the view model
+   * and raises event to parent to update the order model
+   */
   const handleAddPartLineEvent = () => {
     const model = value.addPartLine();
     onChange(model);
   };
 
+  /**
+   * update part line, the updated part line is return in the labour line parameter
+   * and raises an event to the parent with the updated labourLine to update
+   * the order model
+   */
   const handlePartLineUpdatedEvent = (labourLine: LabourLineViewModel) => {
     onChange(labourLine);
   };
 
+  /**
+   * Delete this labour line by raising event to parent
+   */
   const handleDeleteLineEvent = () => {
     onDelete(value);
   };
 
+  /****************************************************/
+  /* Template                                         */
+  /****************************************************/
   return (
     <div className="ui-labour-line">
       <div className="field-container">

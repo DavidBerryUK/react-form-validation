@@ -10,15 +10,34 @@ interface IProperties {
   onDelete: (value: PartLineViewModel) => void;
 }
 
+/**
+ * Display a single part line
+ */
 const UIOrderPartLine: React.FC<IProperties> = ({ value, onChange, onDelete }) => {
+  /****************************************************/
+  /* Event Handlers                                   */
+  /****************************************************/
+
+  /**
+   * a UIField has been updated, this updated the PartLine and
+   * raises an event to the parent to update the order line, and then
+   * the order object.
+   */
   const handleOnFieldValueChangedEvent = (field: FieldModel) => {
     onChange(value.cloneWithField(field));
   };
 
+  /**
+   * Delete this line by raising an event to the parent (Labour Line) to
+   * request to remove it from the parts collection
+   */
   const handleDeleteLineEvent = () => {
     onDelete(value);
   };
 
+  /****************************************************/
+  /* Template                                         */
+  /****************************************************/
   return (
     <div className="ui-part-line">
       <UIField value={value.code} onChange={handleOnFieldValueChangedEvent} />
