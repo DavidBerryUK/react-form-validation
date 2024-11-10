@@ -7,14 +7,17 @@ import UIField from "../../UIField/UIField";
 interface IProperties {
   value: PartLineViewModel;
   onChange: (form: PartLineViewModel) => void;
+  onDelete: (value: PartLineViewModel) => void;
 }
 
-const UIOrderPartLine: React.FC<IProperties> = ({ value, onChange }) => {
+const UIOrderPartLine: React.FC<IProperties> = ({ value, onChange, onDelete }) => {
   const handleOnFieldValueChangedEvent = (field: FieldModel) => {
     onChange(value.cloneWithField(field));
   };
 
-  const handleDeleteLineEvent = () => {};
+  const handleDeleteLineEvent = () => {
+    onDelete(value);
+  };
 
   return (
     <div className="ui-part-line">

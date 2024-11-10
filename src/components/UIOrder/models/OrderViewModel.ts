@@ -57,7 +57,8 @@ export default class OrderViewModel extends OrderRecord {
   /****************************************************/
   constructor(params?: Partial<IOrderParameters>) {
     // Ensure the key is set to a unique value using nanoid()
-    const uniqueParams = { ...params, key: nanoid() };
+    // Only assign a new key if it's not provided in params
+    const uniqueParams = { ...params, key: params?.key || nanoid() };
     super(uniqueParams);
   }
 
@@ -95,8 +96,17 @@ export default class OrderViewModel extends OrderRecord {
   /* Labour Line Management
   /****************************************************/
   addLabourLine(): OrderViewModel {
-    var model = this.clone();
-    model = model.set(orderFieldNames.labourLines, model.labourLines.push(new LabourLineViewModel()));
+    const model = this.set(orderFieldNames.labourLines, this.labourLines.push(new LabourLineViewModel()));
+    return model;
+  }
+
+  deleteLabourLine(labourLine: LabourLineViewModel): OrderViewModel {
+    const index = this.labourLines.findIndex((line) => line.key === labourLine.key);
+    if (index === -1) {
+      console.warn("Labour line not found.");
+      return this;
+    }
+    const model = this.set(orderFieldNames.labourLines, this.labourLines.delete(index));
     return model;
   }
 

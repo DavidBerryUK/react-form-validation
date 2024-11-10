@@ -19,11 +19,15 @@ const UIOrderLabourLineCollection: React.FC<IProperties> = ({ value, onChange })
     onChange(value.addLabourLine());
   };
 
+  const handleOnDeleteLabourLine = (labourLine: LabourLineViewModel) => {
+    onChange(value.deleteLabourLine(labourLine));
+  };
+
   return (
     <div className="ui-labour-lines-container">
       <UIButton title="Add Labour Line" clear onClick={handleAddLabourLine} />
       {value.labourLines.map((line) => (
-        <UIOrderLabourLine key={line.key} value={line} onChange={handleOnLabourLineChange} />
+        <UIOrderLabourLine key={line.key} value={line} onChange={handleOnLabourLineChange} onDelete={handleOnDeleteLabourLine} />
       ))}
     </div>
   );

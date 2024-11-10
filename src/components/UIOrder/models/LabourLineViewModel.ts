@@ -135,6 +135,16 @@ export class LabourLineViewModel extends LabourLineRecord {
     return model;
   }
 
+  deletePartLine(partLine: PartLineViewModel): LabourLineViewModel {
+    const index = this.partLines.findIndex((line) => line.key === partLine.key);
+    if (index === -1) {
+      console.warn("Part line not found.");
+      return this;
+    }
+    const model = this.set(labourLineFieldNames.partLines, this.partLines.delete(index));
+    return model;
+  }
+
   private updateCalculations(model: LabourLineViewModel): LabourLineViewModel {
     // Update Line Total
     var labourRate = model.labourRate.valueAsNumber;

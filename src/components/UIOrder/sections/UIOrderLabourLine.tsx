@@ -6,13 +6,12 @@ import UIField from "../../UIField/UIField";
 import UIOrderPartLineCollection from "./UIOrderPartLineCollection";
 
 interface IProperties {
-  // single labour line
   value: LabourLineViewModel;
-  // return updated labour line
-  onChange: (form: LabourLineViewModel) => void;
+  onChange: (value: LabourLineViewModel) => void;
+  onDelete: (value: LabourLineViewModel) => void;
 }
 
-const UIOrderLabourLine: React.FC<IProperties> = ({ value, onChange }) => {
+const UIOrderLabourLine: React.FC<IProperties> = ({ value, onChange, onDelete }) => {
   const handleOnFieldValueChangedEvent = (field: FieldModel) => {
     onChange(value.cloneWithField(field));
   };
@@ -26,7 +25,9 @@ const UIOrderLabourLine: React.FC<IProperties> = ({ value, onChange }) => {
     onChange(labourLine);
   };
 
-  const handleDeleteLineEvent = () => {};
+  const handleDeleteLineEvent = () => {
+    onDelete(value);
+  };
 
   return (
     <div className="ui-labour-line">

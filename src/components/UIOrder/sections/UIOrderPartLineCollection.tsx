@@ -14,10 +14,15 @@ const UIOrderPartLineCollection: React.FC<IProperties> = ({ value, onChange }) =
     onChange(model);
   };
 
+  const handleDeleteLineEvent = (partLine: PartLineViewModel) => {
+    const model = value.deletePartLine(partLine);
+    onChange(model);
+  };
+
   return (
     <div className="ui-order-part-line-collection">
       {value.partLines.map((line) => (
-        <UIOrderPartLine key={line.key} value={line} onChange={handleOnPartLineChangeEvent} />
+        <UIOrderPartLine key={line.key} value={line} onChange={handleOnPartLineChangeEvent} onDelete={handleDeleteLineEvent} />
       ))}
     </div>
   );
