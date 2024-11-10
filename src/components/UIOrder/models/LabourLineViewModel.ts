@@ -52,12 +52,11 @@ const LabourLineRecord = Record<ILabourLineParameters>({
 
 export class LabourLineViewModel extends LabourLineRecord {
   /****************************************************/
-  /* Constructor to initialize with a unique key    */
+  /* Constructor to initialize with a unique key      */
   /****************************************************/
   constructor(params?: Partial<ILabourLineParameters>) {
-    // Ensure the key is set to a unique value using nanoid()
-    const uniqueParams = { ...params, key: nanoid() };
-    super(uniqueParams);
+    const initParams = Object.assign({}, params, { key: params?.key ?? nanoid() });
+    super(initParams);
   }
 
   /****************************************************/
@@ -100,6 +99,8 @@ export class LabourLineViewModel extends LabourLineRecord {
   /****************************************************/
   clone(): LabourLineViewModel {
     return new LabourLineViewModel({
+      id: this.id,
+      key: this.key,
       description: this.description,
       labourRate: this.labourRate,
       hours: this.hours,
@@ -121,6 +122,16 @@ export class LabourLineViewModel extends LabourLineRecord {
   addPartLine(): LabourLineViewModel {
     var model = this.clone();
     model = model.set(labourLineFieldNames.partLines, model.partLines.push(new PartLineViewModel()));
+    return model;
+  }
+
+  updatePartLine(partLine: PartLineViewModel): LabourLineViewModel {
+    const index = this.partLines.findIndex((line) => line.key === partLine.key);
+    if (index === -1) {
+      console.warn("part line not found.");
+      return this;
+    }
+    const model = this.set(labourLineFieldNames.partLines, this.partLines.set(index, partLine));
     return model;
   }
 

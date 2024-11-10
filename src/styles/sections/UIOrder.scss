@@ -1,21 +1,50 @@
-.ui-order-lines {
+.ui-order-widget {
+  background: #fbfbfb;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.ui-order-header-widget {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px black solid;
+  border-bottom: 1px black solid;
+  margin-top: 4px;
+  margin-top: 4px;
+}
+
+.ui-order-part-line-collection {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.field-container {
   display: flex;
   flex-direction: row;
   column-gap: 4px;
   padding: 4px;
-  background: #fbfbfb;
-  border-radius: 6px;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.ui-labour-lines-container {
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
 .ui-labour-line {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   column-gap: 4px;
   padding: 4px;
-  background: #fbfbfb;
+  background: #82acec;
+  border: darken(#82acec, 10) solid 2px;
   border-radius: 6px;
   align-items: center;
+  margin-top: 4px;
+  margin-top: 4px;
 }
 
 .ui-part-line {
@@ -23,7 +52,7 @@
   flex-direction: row;
   column-gap: 4px;
   padding: 4px;
-  background: #fbfbfb;
+  background: #f0dd37;
   border-radius: 6px;
   align-items: center;
 }

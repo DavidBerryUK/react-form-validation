@@ -93,10 +93,20 @@ export default class OrderViewModel extends OrderRecord {
   }
   /****************************************************/
   /* Labour Line Management
-/****************************************************/
+  /****************************************************/
   addLabourLine(): OrderViewModel {
     var model = this.clone();
     model = model.set(orderFieldNames.labourLines, model.labourLines.push(new LabourLineViewModel()));
+    return model;
+  }
+
+  updateLabourLine(labourLine: LabourLineViewModel): OrderViewModel {
+    const index = this.labourLines.findIndex((line) => line.key === labourLine.key);
+    if (index === -1) {
+      console.warn("Labour line not found.");
+      return this;
+    }
+    const model = this.set(orderFieldNames.labourLines, this.labourLines.set(index, labourLine));
     return model;
   }
 

@@ -1,39 +1,44 @@
-import { ContactFormViewModel } from "../../viewModels/ContactFormViewModel";
-import { RsvpFormViewModel } from "../../viewModels/RsvpFormViewModel";
-import { ShoppingListLineViewModel } from "../../viewModels/ShoppingListLineViewModel";
+// import { ContactFormViewModel } from "../../viewModels/ContactFormViewModel";
+// import { RsvpFormViewModel } from "../../viewModels/RsvpFormViewModel";
+// import { ShoppingListLineViewModel } from "../../viewModels/ShoppingListLineViewModel";
 import React, { useState } from "react";
-import UIFormContactWidget from "../UIFormContactWidget/UIFormContactWidget";
-import UIFormRsvpWidget from "../UIFormRsvpWidget/UIFormRsvpWidget";
-import UIShoppingListLineWidget from "../UIShoppingListLineWidget/UIShoppingListLineWidget";
-import UITestHostOrderPartLine from "../UIOrder/UITestHostOrderPartLine";
-import UITestHostOrderLabourLine from "../UIOrder/UITestHostOrderLabourLine";
-import UITestHostOrderLines from "../UIOrder/UITestHostOrderLines";
+// import UIFormContactWidget from "../UIFormContactWidget/UIFormContactWidget";
+// import UIFormRsvpWidget from "../UIFormRsvpWidget/UIFormRsvpWidget";
+// import UIShoppingListLineWidget from "../UIShoppingListLineWidget/UIShoppingListLineWidget";
+
+import OrderViewModel from "../UIOrder/models/OrderViewModel";
+
+import UIOrderWidget from "../UIOrder/UIOrderWidget";
 
 const UIApp: React.FC = () => {
-  const [contactForm, setContactForm] = useState<ContactFormViewModel>(ContactFormViewModel.CreateEmptyViewModel());
-  const [rsvpForm, setRsvpForm] = useState<RsvpFormViewModel>(RsvpFormViewModel.CreateEmptyViewModel());
-  const [shoppingListLine, setShoppingListLine] = useState<ShoppingListLineViewModel>(ShoppingListLineViewModel.CreateEmptyViewModel());
+  const [order, setOrder] = useState<OrderViewModel>(new OrderViewModel());
 
-  const handleOnShoppingListLineChangeEvent = (value: ShoppingListLineViewModel) => {
-    setShoppingListLine(value);
-  };
+  // const [contactForm, setContactForm] = useState<ContactFormViewModel>(ContactFormViewModel.CreateEmptyViewModel());
+  // const [rsvpForm, setRsvpForm] = useState<RsvpFormViewModel>(RsvpFormViewModel.CreateEmptyViewModel());
+  // const [shoppingListLine, setShoppingListLine] = useState<ShoppingListLineViewModel>(ShoppingListLineViewModel.CreateEmptyViewModel());
 
-  const handleOnContactFormChangeEvent = (value: ContactFormViewModel) => {
-    setContactForm(value);
-  };
+  // const handleOnShoppingListLineChangeEvent = (value: ShoppingListLineViewModel) => {
+  //   setShoppingListLine(value);
+  // };
 
-  const handleOnRsvpFormChangeEvent = (value: RsvpFormViewModel) => {
-    setRsvpForm(value);
+  // const handleOnContactFormChangeEvent = (value: ContactFormViewModel) => {
+  //   setContactForm(value);
+  // };
+
+  // const handleOnRsvpFormChangeEvent = (value: RsvpFormViewModel) => {
+  //   setRsvpForm(value);
+  // };
+
+  const handleOnOrderChangeEvent = (value: OrderViewModel) => {
+    setOrder(value);
   };
 
   return (
     <div className="ui-app-list">
-      <UIFormContactWidget value={contactForm} onChange={handleOnContactFormChangeEvent} />
+      {/* <UIFormContactWidget value={contactForm} onChange={handleOnContactFormChangeEvent} />
       <UIFormRsvpWidget value={rsvpForm} onChange={handleOnRsvpFormChangeEvent} />
-      <UIShoppingListLineWidget value={shoppingListLine} onChange={handleOnShoppingListLineChangeEvent} />
-      <UITestHostOrderLabourLine />
-      <UITestHostOrderPartLine />
-      <UITestHostOrderLines />
+      <UIShoppingListLineWidget value={shoppingListLine} onChange={handleOnShoppingListLineChangeEvent} /> */}
+      <UIOrderWidget value={order} onChange={handleOnOrderChangeEvent} />
     </div>
   );
 };

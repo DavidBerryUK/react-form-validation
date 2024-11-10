@@ -1,8 +1,8 @@
-import { PartLineViewModel } from "./models/PartLineViewModel";
-import FieldModel from "../../library/packageViewModelp/base/FieldModel";
+import { PartLineViewModel } from "../models/PartLineViewModel";
+import FieldModel from "../../../library/packageViewModelp/base/FieldModel";
 import React from "react";
-import UIButton from "../UIButton/UIButton";
-import UIField from "../UIField/UIField";
+import UIButton from "../../UIButton/UIButton";
+import UIField from "../../UIField/UIField";
 
 interface IProperties {
   value: PartLineViewModel;

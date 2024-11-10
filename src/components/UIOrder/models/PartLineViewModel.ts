@@ -50,9 +50,8 @@ export class PartLineViewModel extends PartLineRecord {
   /* Constructor to initialize with a unique key    */
   /****************************************************/
   constructor(params?: Partial<IPartLineParameters>) {
-    // Ensure the key is set to a unique value using nanoid()
-    const uniqueParams = { ...params, key: nanoid() };
-    super(uniqueParams);
+    const initParams = Object.assign({}, params, { key: params?.key ?? nanoid() });
+    super(initParams);
   }
 
   /****************************************************/
