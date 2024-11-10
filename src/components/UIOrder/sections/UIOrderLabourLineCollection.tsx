@@ -1,8 +1,8 @@
 import { LabourLineViewModel } from "../models/LabourLineViewModel";
 import OrderViewModel from "../models/OrderViewModel";
 import React from "react";
-import UIOrderLabourLine from "./UIOrderLabourLine";
 import UIButton from "../../UIButton/UIButton";
+import UIOrderLabourLine from "./UIOrderLabourLine";
 
 interface IProperties {
   value: OrderViewModel;

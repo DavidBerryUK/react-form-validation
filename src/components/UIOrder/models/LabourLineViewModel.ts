@@ -1,8 +1,8 @@
 import { List, Record } from "immutable";
+import { nanoid } from "nanoid";
 import { PartLineViewModel } from "./PartLineViewModel";
 import EnumFieldDataType from "../../../library/packageViewModelp/enums/EnumFieldDataType";
 import FieldModel from "../../../library/packageViewModelp/base/FieldModel";
-import { nanoid } from "nanoid";
 
 //***************************************/
 // Labour Line                          */
@@ -113,7 +113,7 @@ export class LabourLineViewModel extends LabourLineRecord {
 
   cloneWithField(field: FieldModel): LabourLineViewModel {
     const model = this.set(field.fieldName as keyof ILabourLineParameters, field) as LabourLineViewModel;
-    return this.updateCalculations(model);
+    return model.updateCalculations(model);
   }
 
   /****************************************************/
@@ -122,6 +122,7 @@ export class LabourLineViewModel extends LabourLineRecord {
   addPartLine(): LabourLineViewModel {
     var model = this.clone();
     model = model.set(labourLineFieldNames.partLines, model.partLines.push(new PartLineViewModel()));
+    model = model.updateCalculations(model);
     return model;
   }
 
@@ -131,7 +132,9 @@ export class LabourLineViewModel extends LabourLineRecord {
       console.warn("part line not found.");
       return this;
     }
-    const model = this.set(labourLineFieldNames.partLines, this.partLines.set(index, partLine));
+    var model = this as LabourLineViewModel;
+    model = model.set(labourLineFieldNames.partLines, this.partLines.set(index, partLine));
+    model = model.updateCalculations(model);
     return model;
   }
 
@@ -141,11 +144,49 @@ export class LabourLineViewModel extends LabourLineRecord {
       console.warn("Part line not found.");
       return this;
     }
-    const model = this.set(labourLineFieldNames.partLines, this.partLines.delete(index));
+    var model = this as LabourLineViewModel;
+    model = model.set(labourLineFieldNames.partLines, model.partLines.delete(index));
+    model = model.updateCalculations(model);
     return model;
   }
 
+  /****************************************************/
+  /* Calculations to run each time model is changed   */
+  /****************************************************/
   private updateCalculations(model: LabourLineViewModel): LabourLineViewModel {
+    model = model.updatePartsTotalfield(model);
+    model = model.updateLabourTotalfield(model);
+    model = model.updateLineTotalfield(model);
+    return model;
+  }
+
+  private updatePartsTotalfield(model: LabourLineViewModel): LabourLineViewModel {
+    var partsTotal = 0;
+    model.partLines.forEach((line) => {
+      const lineTotal = line.lineTotal.valueAsNumber ?? 0;
+      partsTotal = partsTotal + lineTotal;
+    });
+    if (model.partsTotal.valueAsNumber !== partsTotal) {
+      var field = model.partsTotal.cloneWithValue(partsTotal);
+      model = model.set(field.fieldName as keyof ILabourLineParameters, field);
+    }
+    return model;
+  }
+
+  private updateLineTotalfield(model: LabourLineViewModel): LabourLineViewModel {
+    var labourTotal = model.labourTotal.valueAsNumber ?? 0;
+    var partsTotal = model.partsTotal.valueAsNumber ?? 0;
+    var lineTotal = labourTotal + partsTotal;
+
+    if (model.lineTotal.valueAsNumber !== lineTotal) {
+      var field = model.lineTotal.cloneWithValue(lineTotal);
+      model = model.set(field.fieldName as keyof ILabourLineParameters, field) as LabourLineViewModel;
+    }
+
+    return model;
+  }
+
+  private updateLabourTotalfield(model: LabourLineViewModel): LabourLineViewModel {
     // Update Line Total
     var labourRate = model.labourRate.valueAsNumber;
     var hours = model.hours.valueAsNumber;

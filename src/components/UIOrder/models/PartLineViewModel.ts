@@ -1,7 +1,7 @@
-import { Record } from "immutable";
-import FieldModel from "../../../library/packageViewModelp/base/FieldModel";
-import EnumFieldDataType from "../../../library/packageViewModelp/enums/EnumFieldDataType";
 import { nanoid } from "nanoid";
+import { Record } from "immutable";
+import EnumFieldDataType from "../../../library/packageViewModelp/enums/EnumFieldDataType";
+import FieldModel from "../../../library/packageViewModelp/base/FieldModel";
 
 //***************************************/
 // Part Line                            */
@@ -100,11 +100,15 @@ export class PartLineViewModel extends PartLineRecord {
   }
 
   cloneWithField(field: FieldModel): PartLineViewModel {
-    var model = this.set(field.fieldName as keyof IPartLineParameters, field) as PartLineViewModel;
+    var model = this as PartLineViewModel;
+    model = this.set(field.fieldName as keyof IPartLineParameters, field);
     model = model.updateCalculations(model);
     return model;
   }
 
+  /****************************************************/
+  /* Calculations to run each time model is changed   */
+  /****************************************************/
   private updateCalculations(model: PartLineViewModel): PartLineViewModel {
     // Update Line Total
     var price = model.price.valueAsNumber;

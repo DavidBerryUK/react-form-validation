@@ -112,7 +112,7 @@ export default class FieldModel extends FieldViewModelRecord {
    * Retrieves the numeric value if applicable.
    */
   get valueAsNumber(): FieldTypeNumber {
-    return this.value as FieldTypeNumber;
+    return Number(this.value) as FieldTypeNumber;
   }
 
   /**

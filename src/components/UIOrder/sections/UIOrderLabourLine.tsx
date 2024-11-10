@@ -38,6 +38,7 @@ const UIOrderLabourLine: React.FC<IProperties> = ({ value, onChange, onDelete })
         <UIField value={value.labourRate} onChange={handleOnFieldValueChangedEvent} />
         <UIField value={value.hours} onChange={handleOnFieldValueChangedEvent} />
         <UIField value={value.labourTotal} onChange={handleOnFieldValueChangedEvent} />
+        <UIField value={value.partsTotal} onChange={handleOnFieldValueChangedEvent} />
         <UIField value={value.lineTotal} onChange={handleOnFieldValueChangedEvent} />
         <UIButton title="Add Part Line" clear onClick={handleAddPartLineEvent} />
         <UIButton title="Delete" clear onClick={handleDeleteLineEvent} />
