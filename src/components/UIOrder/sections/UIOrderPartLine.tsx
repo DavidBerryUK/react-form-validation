@@ -18,7 +18,6 @@ const UIOrderPartLine: React.FC<IProperties> = ({ value, onChange }) => {
 
   return (
     <div className="ui-part-line">
-      <h3>Part</h3>
       <UIField value={value.code} onChange={handleOnFieldValueChangedEvent} />
       <UIField value={value.description} onChange={handleOnFieldValueChangedEvent} />
       <UIField value={value.price} onChange={handleOnFieldValueChangedEvent} />
